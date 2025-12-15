@@ -3,36 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo List App</title>
+    <title>Welcome to ToDo List App</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-    <div class="grid grid-cols-4 grid-rows-5 md:grid-cols gap-2">
-        <div class="grid row-span-5 border border-black">
-            <div class="grid grid-rows-6 gap-2 p-4">
-                <div class="row-span-1 border border-stone-700 p-2">
-                    <h1 class="text-2xl font-bold">Add ToDo</h1>
-                </div>
-                <div class="row-span-5 border border-stone-700 p-2">
-                    <form id="todo-form" class="flex flex-col gap-2">
-                        <input type="text" id="todo-input" class="border border-gray-300 p-2" placeholder="Enter a new task" required>
-                        <button type="submit" class="bg-blue-500 text-white p-2">Add Task</button>
-                    </form>
-                </div>
+    <div class="min-h-screen flex items-center justify-center bg-[#94B4C1]">
+        <div class="flex w-full max-w-3xl max-h-screen bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="w-1/2 bg-white text-white p-10 flex flex-col justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-16 mb-6">
+                <circle cx="6" cy="12" r="1.5" fill="red" />
+                <circle cx="12" cy="12" r="1.5" fill="orange" />
+                <circle cx="18" cy="12" r="1.5" fill="green" />
+            </svg>
+            <img src="src/img/ilust1.jpg" alt="Illustration" class="w-full h-auto mb-4">
+            <p class="text-md text-black font-md text-center mb-4">Stay organized. Stay ahead.</p>
             </div>
-        </div>
-        <div class="grid col-span-3 row-span-5 border border-stone-700">
-            <div class="grid grid-rows-6 gap-2 p-4">
-                <div class="row-span-1 border border-black p-2">
-                    <h1 class="text-2xl font-bold">ToDo List</h1>
+
+            <div class="flex flex-col px-5 w-1/2">
+                <div class="pt-10">
+                    <h2 class="text-3xl font-bold text-center text-black">Hola Amigo!</h2>
+                    <p class="text-md text-center text-gray-600">Login to your account to continue</p>
                 </div>
-                <div class="row-span-5 border border-black p-2 overflow-y-auto">
-                    <ul id="todo-list" class="list-disc list-inside">
-                        <!-- ToDo items will be dynamically added here -->
-                    </ul>
-                </div>
+                <form action="" method="get" class="p-10 flex flex-col gap-2 space-y-2">
+                    <p class="text-md font-semibold">Username</p>
+                    <input type="text" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Username...">
+                    <p class="text-md font-semibold">Password</p>
+                    <input id="password" type="password" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Password...">
+
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" id="togglePassword" class="form-checkbox h-5 w-5 text-black">
+                        <span class="ml-2 text-gray-700">Show Password</span>
+                    </label>
+                    <button type="submit" class="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Login</button>
+                    
+                    <div class=" text-center text-sm text-gray-600">
+                    Don't have an account? <a href="public/signup.php" class="text-blue-600 font-semibold hover:underline">Sign up</a>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
 </body>
 </html>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("change", function() {
+        if (this.checked) {
+        passwordInput.type = "text";   // tampilkan password
+        } else {
+        passwordInput.type = "password"; // sembunyikan password
+        }
+    });
+</script>
