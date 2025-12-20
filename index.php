@@ -1,3 +1,24 @@
+<?php
+  session_start();
+  if (isset($_SESSION['login'])) {
+      header('Location: /public/homepage.php');
+      exit();
+  }
+
+  if(isset($_POST['login'])) {
+      $username = $_POST['username'];
+      $password = $_POST['password'];
+
+      if($username === 'user' && $password === 'pw') {
+          $_SESSION['login'] = true;
+          header('Location: /public/homepage.php');
+          exit();
+      } else {
+          $error = "Username atau password salah.";
+      }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,17 +45,17 @@
                     <h2 class="text-3xl font-bold text-center text-black">Hola Amigo!</h2>
                     <p class="text-md text-center text-gray-600">Login to your account to continue</p>
                 </div>
-                <form action="" method="get" class="p-10 flex flex-col gap-2 space-y-2">
+                <form action="" method="POST" class="p-10 flex flex-col gap-2 space-y-2">
                     <p class="text-md font-semibold">Username</p>
-                    <input type="text" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Username...">
+                    <input type="text" name="username" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Username...">
                     <p class="text-md font-semibold">Password</p>
-                    <input id="password" type="password" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Password...">
+                    <input id="password" type="password" name="password" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Password...">
 
                     <label class="inline-flex items-center">
                         <input type="checkbox" id="togglePassword" class="form-checkbox h-5 w-5 text-black">
                         <span class="ml-2 text-gray-700">Show Password</span>
                     </label>
-                    <button type="submit" class="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Login</button>
+                    <button type="submit" name="login" class="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Login</button>
                     
                     <div class=" text-center text-sm text-gray-600">
                     Don't have an account? <a href="public/signup.php" class="text-blue-600 font-semibold hover:underline">Sign up</a>
