@@ -1,8 +1,26 @@
 <?php
   session_start();
+
+  header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  header("Pragma: no-cache");
+
   if (!isset($_SESSION['login'])) {
-      header('Location: ../index.php');
+      header('Location: /index.php');
       exit();
+  }
+
+  if (isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+  } else {
+    $username = 'User';
+  }
+
+  if(isset($_POST['logout'])) {
+    $_SESSION = array();
+    session_destroy();
+    header('Location: ../index.php');
+    exit();
   }
 ?>
 
@@ -63,6 +81,8 @@
         DIKERJAIN
       </h1>
 
+      <h3 class="text-sm text-slate-400 mb-6">Selamat datang, <?php echo $username; ?>!</h3>
+
       <nav class="flex-1 space-y-4 text-slate-600">
         <a class="flex items-center gap-3 font-medium text-blue-600" href="#">
           📒 Notes
@@ -76,6 +96,9 @@
         <a class="flex items-center gap-3 hover:text-blue-600" href="#">
           ⚙️ Settings
         </a>
+        <form action="" method="POST">
+          <button name="logout" class="flex items-center mt-[350px] py-2 px-5 color black bg-transparent hover:text-blue-600" type="submit">logout</button>
+        </form>
       </nav>
 
       <div class="text-sm text-slate-400 border-t pt-4">
@@ -83,7 +106,6 @@
       </div>
     </aside>
 
-    <!-- Notes List -->
     <main class="w-full md:w-[360px] bg-white border-r p-6 overflow-y-auto">
       
       <input
@@ -95,7 +117,6 @@
       <h2 class="text-lg font-bold mb-4">Tasks</h2>
 
       <div class="space-y-4">
-
         <div class="p-4 rounded-xl border hover:bg-slate-50 cursor-pointer">
           <h3 class="font-semibold">Belanja Bulanan</h3>
           <p class="text-sm text-slate-500">Beras, telur, minyak</p>
@@ -123,9 +144,7 @@
       </div>
     </main>
 
-    <!-- Detail Panel -->
     <section class="hidden lg:flex flex-col flex-1 bg-white p-10 overflow-y-auto">
-      
       <h1 class="text-3xl font-bold mb-4">
         Tulis Ide Aplikasi 💡
       </h1>
@@ -162,5 +181,12 @@
 
   </div>
 
+<script>
+window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+</script>
 </body>
 </html>
