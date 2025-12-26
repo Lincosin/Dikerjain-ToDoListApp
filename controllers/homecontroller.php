@@ -5,13 +5,16 @@ class HomeController {
     private $taskModel;
     private $noteModel;
     private $userModel;
+    private $settingModel;
 
     public function __construct($pdo) {
         // $this->userModel = $userModel;
         // require_once __DIR__ . '/../models/TaskModel.php';
+        require_once __DIR__ . '/../model/settingmodel.php';
         require_once __DIR__ . '/../model/notemodel.php';
         // $this->taskModel = new TaskModel($pdo);
         $this->noteModel = new NoteModel($pdo);
+        $this->settingModel = new SettingModel($pdo);
     }
     
     public function index() {
