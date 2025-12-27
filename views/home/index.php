@@ -6,88 +6,43 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-[#F6F3EE] h-screen w-screen overflow-hidden">
+<body class="bg-[#f5f3ef] h-screen w-screen overflow-hidden">
 
-  <!-- App Wrapper -->
   <div class="h-screen w-screen flex">
-
-    <!-- Sidebar -->
-    <!-- <aside class="w-64 bg-white border-r px-6 py-8 hidden md:flex flex-col">
-      <h1 class="text-2xl font-extrabold text-blue-700 mb-10">
-        DIKERJAIN
-      </h1>
-
-      <h3 class="text-sm text-slate-400 mb-6">Selamat datang,  <?= htmlspecialchars($username) ?>!</h3>
-
-      <nav class="flex-1 space-y-4 text-slate-600">
-        <a class="flex items-center gap-3 font-medium text-blue-600" href="#">
-          📒 Notes
-        </a>
-        <a class="flex items-center gap-3 hover:text-blue-600" href="#">
-          ✅ Tasks
-        </a>
-        <a class="flex items-center gap-3 hover:text-blue-600" href="#">
-          📅 Kalender
-        </a>
-        <a class="flex items-center gap-3 hover:text-blue-600" href="#">
-          ⚙️ Settings
-        </a>
-        <form action="" method="POST">
-          <button name="logout" class="flex items-center mt-[350px] py-2 px-5 color black bg-transparent hover:text-blue-600" type="submit">logout</button>
-        </form>
-      </nav>
-
-      <div class="text-sm text-slate-400 border-t pt-4">
-        © 2025 Dikerjain
-      </div>
-    </aside> -->
 
     <?php 
       require_once __DIR__ . '/../../src/component/sidebar.php'; 
     ?>
 
-    <main class="w-full md:w-[360px] bg-white border-r p-6 overflow-y-auto">
-      
-      <input
-        type="text"
-        placeholder="Cari tugas..."
-        class="w-full px-4 py-2 mb-6 rounded-lg border focus:outline-none focus:ring focus:ring-blue-200"
-      >
 
-      <h2 class="text-lg font-bold mb-4">Tasks</h2>
 
-      <div class="space-y-4">
-        <div class="p-4 rounded-xl border hover:bg-slate-50 cursor-pointer">
-          <h3 class="font-semibold">Belanja Bulanan</h3>
-          <p class="text-sm text-slate-500">Beras, telur, minyak</p>
-          <span class="text-xs text-slate-400">Hari ini</span>
-        </div>
-
-        <div class="p-4 rounded-xl border hover:bg-slate-50 cursor-pointer">
-          <h3 class="font-semibold">Baca Buku</h3>
-          <p class="text-sm text-slate-500">Atomic Habits</p>
-          <span class="text-xs text-slate-400">Besok</span>
-        </div>
-
-        <div class="p-4 rounded-xl bg-orange-200 cursor-pointer">
-          <h3 class="font-semibold">Tulis Ide Aplikasi 💡</h3>
-          <p class="text-sm text-slate-700">Fitur to-do list</p>
-          <span class="text-xs text-slate-600">1 hari lalu</span>
-        </div>
-
-        <div class="p-4 rounded-xl border hover:bg-slate-50 cursor-pointer">
-          <h3 class="font-semibold">Olahraga</h3>
-          <p class="text-sm text-slate-500">Lari pagi</p>
-          <span class="text-xs text-slate-400">2 hari lalu</span>
-        </div>
-
+    <!-- Page container -->
+    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+      <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-semibold">Good morning, Amy!</h1>
+        <p class="mt-1 text-gray-600">You have <span class="font-medium">4 tasks</span> for today and <span class="font-medium">12 tasks</span> for this week.</p>
       </div>
+    </header>
+    <div class="flex flex-col md:flex-row md:items-center bg-gray-200">
+      
+    </div>
+
     </main>
 
     <section class="hidden lg:flex flex-col flex-1 bg-white p-10 overflow-y-auto">
-      <h1 class="text-3xl font-bold mb-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">  
+    <h1 class="text-3xl font-bold mb-4">
         Tulis Ide Aplikasi 💡
       </h1>
+      <div class="flex items-center gap-3">
+        <button class="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 shadow-sm transition">
+          <span class="text-lg">+</span>
+          <span class="font-medium">New task</span>
+        </button>
+        <img src="https://i.pravatar.cc/40?img=8" alt="Profile" class="h-10 w-10 rounded-full ring-2 ring-white shadow-sm"/>
+      </div>
+    </div>
 
       <div class="flex gap-2 mb-6">
         <span class="text-xs bg-orange-100 text-orange-600 px-3 py-1 rounded-full">#ideas</span>

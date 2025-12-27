@@ -4,19 +4,20 @@
             DIKERJAIN
           </h1>
 
-          <h3 class="text-sm text-slate-400 mb-6">Selamat datang, <?= htmlspecialchars($username) ?>!</h3>
-
+          <h3 class="text-sm text-slate-400 mb-6">Selamat datang!</h3>
+          <!-- <?= htmlspecialchars($username) ?> -->
+          
           <nav class="flex-1 space-y-4 text-slate-600">
-            <a class="flex items-center gap-3 text-blue-600" href="index.php?page=note">
-              📒 Notes
+            <a class="flex items-center gap-3 hover:text-blue-600" href="index.php?page=home">
+              🏠 Home
             </a>
-            <a class="flex items-center gap-3 hover:text-blue-600" href="#">
+            <a class="flex items-center gap-3 hover:text-blue-600" href="index.php?page=task">
               ✅ Tasks
             </a>
             <a class="flex items-center gap-3 hover:text-blue-600" href="index.php?page=calendar">
               📅 Kalender
             </a>
-            <a class="flex items-center gap-3 hover:text-blue-600" href="#">
+            <a class="flex items-center gap-3 hover:text-blue-600" href="index.php?page=settings">
               ⚙️ Settings
             </a>
             <form action="index.php?page=user&action=logout" method="POST">

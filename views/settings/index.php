@@ -1,18 +1,3 @@
-<?php
-session_start();
-
-/* SIMPAN PROFILE */
-if (isset($_POST['saveProfile'])) {
-  $_SESSION['username'] = $_POST['username'];
-  $_SESSION['email'] = $_POST['email'];
-  header("Location: settings.php");
-  exit;
-}
-
-$username = $_SESSION['username'] ?? 'User';
-$email = $_SESSION['email'] ?? 'user@email.com';
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,25 +10,9 @@ $email = $_SESSION['email'] ?? 'user@email.com';
 
 <div class="h-screen w-screen flex">
 
-<!-- SIDEBAR -->
-<aside class="w-64 bg-white border-r px-6 py-8 hidden md:flex flex-col">
-  <h1 class="text-2xl font-extrabold text-blue-700 mb-10">DIKERJAIN</h1>
-
-  <h3 class="text-sm text-slate-400 mb-6">
-    Selamat datang, <?= htmlspecialchars($username) ?>!
-  </h3>
-
-  <nav class="flex-1 space-y-4 text-slate-600">
-    <a class="flex items-center gap-3 hover:text-blue-600" href="#">📒 Notes</a>
-    <a class="flex items-center gap-3 hover:text-blue-600" href="#">✅ Tasks</a>
-    <a class="flex items-center gap-3 hover:text-blue-600" href="kalender.php">📅 Kalender</a>
-    <a class="flex items-center gap-3 font-medium text-blue-600" href="settings.php">⚙️ Settings</a>
-  </nav>
-
-  <div class="text-sm text-slate-400 border-t pt-4">
-    © 2025 Dikerjain
-  </div>
-</aside>
+<?php 
+  require_once __DIR__ . '/../../src/component/sidebar.php';
+?>
 
 <!-- CONTENT -->
 <section class="flex-1 bg-white p-10 overflow-y-auto">
@@ -53,12 +22,12 @@ $email = $_SESSION['email'] ?? 'user@email.com';
 <!-- PROFILE -->
 <div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center gap-6">
   <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl font-bold text-blue-600">
-    <?= strtoupper($username[0]) ?>
+    <!-- <?= htmlspecialchars($username) ?> -->
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
-    <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
+    <!-- <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
+    <p class="text-slate-500"><?= htmlspecialchars($email) ?></p> -->
     <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
       Ubah Profil
     </button>

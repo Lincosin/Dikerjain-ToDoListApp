@@ -7,7 +7,7 @@ class SettingController {
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
-        require_once __DIR__ . '/../model/settingmodel.php';
+        require_once __DIR__ . '/../models/settingmodel.php';
         $this->settingModel = new SettingModel($pdo);
     }
 
