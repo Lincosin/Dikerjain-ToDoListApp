@@ -45,18 +45,6 @@ class UserModel {
         return false; 
     }
 
-
-    // Update data user (opsional)
-    public function update($id, $username, $email) {
-        $stmt = $this->conn->prepare(
-            "UPDATE users SET username = :username, email = :email WHERE id = :id"
-        );
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-
     // Hapus user (opsional)
     public function delete($id) {
         $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :id");
