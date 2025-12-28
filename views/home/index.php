@@ -31,10 +31,9 @@
 
           <div class="flex items-center gap-3 ml-4">
               <div class="text-right hidden sm:block">
-                  <p class="text-xs font-bold text-slate-700 leading-none"><?= htmlspecialchars($username) ?></p>
-                  <p class="text-[10px] text-blue-500 font-medium">Pro Member</p>
+                  <p class="text-sm font-bold text-slate-700 leading-none"><span class="font-normal">Hi,</span> <?= htmlspecialchars($username) ?></p>
               </div>
-              <img src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-white shadow-sm" alt="Profile">
+              <img id="avatar" src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-white shadow-sm" alt="Profile">
           </div>
       </header>
 
@@ -223,6 +222,16 @@
 
       // Jalankan kalender saat pertama kali dimuat
       renderCalendar();
+
+
+      function randomColor() { 
+        return Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'); 
+        } 
+        const avatar = document.getElementById("avatar"); 
+        const url = new URL(avatar.src); 
+        const name = url.searchParams.get("name"); 
+        const bgColor = randomColor(); 
+        avatar.src = `https://ui-avatars.com/api/?name=${name}&background=${bgColor}&color=fff`;
   </script>
 
 </body>
