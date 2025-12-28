@@ -16,40 +16,45 @@ foreach ($tasks as $date => $taskArray) {
 }
 usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); });
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>DIKERJAIN | Kalender</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    /* Memastikan sel kalender tetap kotak dan proporsional */
-    .calendar-day { 
-        height: 55px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>DIKERJAIN | Kalender</title>
+    <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* Memastikan sel kalender tetap kotak dan proporsional */
+        .calendar-day { 
+            height: 55px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="bg-white h-screen w-screen overflow-hidden font-sans">
 <div class="h-screen w-screen flex">
 
-    <?php if(file_exists(__DIR__ . '/../../src/component/sidebar.php')) include __DIR__ . '/../../src/component/sidebar.php'; ?>
+    <?php if(file_exists(__DIR__ . '/../../src/component/sidebar.php')) 
+      include __DIR__ . '/../../src/component/sidebar.php'; ?>
 
     <main class="flex-1 bg-white flex flex-col border-l border-slate-100 overflow-hidden">
         
         <header class="p-6 border-b border-slate-50 flex justify-between items-center bg-white shrink-0">
             <div>
-                <h1 class="text-2xl font-black text-slate-800 tracking-tight">Eksplorasi Jadwal 📅</h1>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Kelola produktivitas harian Anda</p>
+                <h1 class="text-2xl font-semibold text-slate-800 tracking-tight">Eksplorasi Jadwal 📅</h1>
+                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Kelola produktivitas harian Anda</p>
             </div>
             <div class="flex items-center bg-slate-100 p-1 rounded-lg gap-1">
-                <button id="prevMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs">◀</button>
-                <span id="monthYear" class="text-[10px] font-black text-slate-700 uppercase tracking-widest px-4 min-w-[120px] text-center"></span>
-                <button id="nextMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs">▶</button>
+                <button id="prevMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs"><i class="fa-solid fa-caret-left"></i></button>
+                <span id="monthYear" class="text-[10px] font-semibold text-slate-700 uppercase tracking-widest px-4 min-w-[120px] text-center"></span>
+                <button id="nextMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs"><i class="fa-solid fa-caret-right"></i></button>
             </div>
         </header>
 
@@ -65,7 +70,7 @@ usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); 
 
         <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-white">
             <div class="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
-                <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                <h2 class="text-sm font-semibold text-slate-800 uppercase tracking-widest flex items-center gap-2">
                     📋 Rincian Deadline <span id="detailMonthLabel" class="text-blue-600"></span>
                 </h2>
                 <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded"><?= count($allMonthTasks) ?> Tugas</span>

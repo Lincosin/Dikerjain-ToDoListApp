@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>DIKERJAIN | Dashboard</title>
+  <title>DIKERJAIN</title>
+  <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Menghilangkan scrollbar pada Chrome/Safari dan Firefox tanpa mematikan fungsinya */
@@ -30,7 +31,7 @@
 
           <div class="flex items-center gap-3 ml-4">
               <div class="text-right hidden sm:block">
-                  <p class="text-xs font-bold text-slate-700 leading-none"><?= htmlspecialchars($username ?? 'Guest') ?></p>
+                  <p class="text-xs font-bold text-slate-700 leading-none"><?= htmlspecialchars($username) ?></p>
                   <p class="text-[10px] text-blue-500 font-medium">Pro Member</p>
               </div>
               <img src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-white shadow-sm" alt="Profile">
@@ -127,7 +128,7 @@
     </div>
   </div>
 
-  <div id="modalOverlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+  <!-- <div id="modalOverlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md flex items-center justify-center z-[100] p-4">
       <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl transform transition-all border border-slate-100">
           <div class="text-center mb-6">
               <div class="w-16 h-16 bg-orange-50 text-3xl flex items-center justify-center rounded-2xl mx-auto mb-4 border border-orange-100 shadow-sm">🚀</div>
@@ -138,7 +139,7 @@
               Siap, Kerjakan!
           </button>
       </div>
-  </div>
+  </div> -->
 
   <script>
       // Mengirim data tugas dari PHP ke JS agar kalender bisa memberi tanda titik merah

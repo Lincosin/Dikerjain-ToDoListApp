@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>DIKERJAIN | Settings</title>
+  <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -26,8 +27,8 @@
   </div>
 
   <div>
-    <!-- <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
-    <p class="text-slate-500"><?= htmlspecialchars($email) ?></p> -->
+    <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
+    <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
     <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
       Ubah Profil
     </button>
@@ -55,7 +56,7 @@
 
 <!-- LOGOUT -->
 <div class="border-t pt-6">
-  <form method="POST" action="logout.php">
+  <form method="POST" action="index.php?page=user&action=logout">
     <button class="text-red-600 font-medium hover:underline">
       Logout
     </button>
