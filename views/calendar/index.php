@@ -1,18 +1,20 @@
 <?php
-session_start();
 $username = $_SESSION['username'] ?? 'User';
+$tasks = $tasks ?? [];
 
-/*
-  SIMULASI DATA DARI DATABASE
-  nanti tinggal ganti pakai query MySQL
-*/
-$tasks = [
-  "2025-12-27" => ["Meeting Project"]
-];
-
-$notes = [
-  "2025-12-18" => ["Catatan Kuliah"]
-];
+// List rincian tugas untuk bagian bawah
+$allMonthTasks = [];
+foreach ($tasks as $date => $taskArray) {
+    foreach ($taskArray as $t) {
+        $allMonthTasks[] = [
+            'date' => $date,
+            'title' => $t,
+            // Simulasi progress, bisa dihubungkan ke kolom 'status' di DB nanti
+            'progress' => ($date < date('Y-m-d')) ? 100 : rand(20, 85) 
+        ];
+    }
+}
+usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); });
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -20,142 +22,147 @@ $notes = [
   <meta charset="UTF-8">
   <title>DIKERJAIN | Kalender</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    /* Memastikan sel kalender tetap kotak dan proporsional */
+    .calendar-day { 
+        height: 55px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  </style>
 </head>
 
-<body class="bg-[#F6F3EE] h-screen w-screen overflow-hidden">
-
+<body class="bg-white h-screen w-screen overflow-hidden font-sans">
 <div class="h-screen w-screen flex">
 
-<!-- SIDEBAR (AMAN – TIDAK DIUBAH) -->
-<aside class="w-64 bg-white border-r px-6 py-8 hidden md:flex flex-col">
-  <h1 class="text-2xl font-extrabold text-blue-700 mb-10">DIKERJAIN</h1>
+    <?php if(file_exists(__DIR__ . '/../../src/component/sidebar.php')) include __DIR__ . '/../../src/component/sidebar.php'; ?>
 
-  <h3 class="text-sm text-slate-400 mb-6">
-    Selamat datang, <?= htmlspecialchars($username) ?>!
-  </h3>
+    <main class="flex-1 bg-white flex flex-col border-l border-slate-100 overflow-hidden">
+        
+        <header class="p-6 border-b border-slate-50 flex justify-between items-center bg-white shrink-0">
+            <div>
+                <h1 class="text-2xl font-black text-slate-800 tracking-tight">Eksplorasi Jadwal 📅</h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Kelola produktivitas harian Anda</p>
+            </div>
+            <div class="flex items-center bg-slate-100 p-1 rounded-lg gap-1">
+                <button id="prevMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs">◀</button>
+                <span id="monthYear" class="text-[10px] font-black text-slate-700 uppercase tracking-widest px-4 min-w-[120px] text-center"></span>
+                <button id="nextMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs">▶</button>
+            </div>
+        </header>
 
-  <nav class="flex-1 space-y-4 text-slate-600">
-    <a class="flex items-center gap-3 hover:text-blue-600" href="#">📒 Notes</a>
-    <a class="flex items-center gap-3 hover:text-blue-600" href="#">✅ Tasks</a>
-    <a class="flex items-center gap-3 font-medium text-blue-600" href="#">📅 Kalender</a>
-    <a class="flex items-center gap-3 hover:text-blue-600" href="#">⚙️ Settings</a>
-  </nav>
+        <div class="w-full p-6 border-b border-slate-100 bg-slate-50/20" style="height: 48vh;">
+            <div class="grid grid-cols-7 text-center mb-3">
+                <?php foreach(['Min','Sen','Sel','Rab','Kam','Jum','Sab'] as $day): ?>
+                    <div class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em]"><?= $day ?></div>
+                <?php endforeach; ?>
+            </div>
+            <div id="calendarGrid" class="grid grid-cols-7 gap-[1px] border border-slate-100 bg-slate-100">
+                </div>
+        </div>
 
-  <div class="text-sm text-slate-400 border-t pt-4">
-    © 2025 Dikerjain
-  </div>
-</aside>
+        <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-white">
+            <div class="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
+                <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                    📋 Rincian Deadline <span id="detailMonthLabel" class="text-blue-600"></span>
+                </h2>
+                <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded"><?= count($allMonthTasks) ?> Tugas</span>
+            </div>
+            
+            <div class="flex flex-col gap-3">
+                <?php if(empty($allMonthTasks)): ?>
+                    <div class="py-10 text-center border-2 border-dashed border-slate-50">
+                        <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">Belum ada tugas bulan ini</p>
+                    </div>
+                <?php else: ?>
+                    <?php foreach($allMonthTasks as $item): 
+                        $isToday = ($item['date'] == date('Y-m-d'));
+                    ?>
+                        <div class="group flex items-center gap-6 p-4 border border-slate-50 hover:bg-blue-50/30 transition-all cursor-default">
+                            <div class="w-12 text-center border-r border-slate-100 pr-4">
+                                <span class="text-[9px] font-bold text-slate-400 block uppercase"><?= date('M', strtotime($item['date'])) ?></span>
+                                <span class="text-lg font-black text-slate-800 leading-none"><?= date('d', strtotime($item['date'])) ?></span>
+                            </div>
 
-<!-- KONTEN -->
-<section class="flex-1 bg-white p-10 overflow-y-auto">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-end mb-2">
+                                    <h4 class="font-bold text-slate-800 text-[12px]"><?= htmlspecialchars($item['title']) ?></h4>
+                                    <span class="text-[10px] font-black text-blue-600"><?= $item['progress'] ?>%</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-slate-100 overflow-hidden">
+                                    <div class="h-full bg-blue-600 transition-all duration-1000" style="width: <?= $item['progress'] ?>%"></div>
+                                </div>
+                                <p class="text-[9px] font-bold text-slate-300 uppercase mt-2 tracking-tighter">Deadline: <?= date('d F Y', strtotime($item['date'])) ?></p>
+                            </div>
 
-<!-- HEADER -->
-<div class="flex justify-between items-center mb-8">
-  <h1 class="text-3xl font-bold">Kalender 📅</h1>
+                            <div class="shrink-0">
+                                <?php if($isToday): ?>
+                                    <span class="px-3 py-1 bg-red-600 text-white text-[9px] font-black uppercase tracking-tighter">Urgent</span>
+                                <?php else: ?>
+                                    <span class="px-3 py-1 border border-slate-200 text-slate-400 text-[9px] font-black uppercase tracking-tighter">In Progress</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
 
-  <div class="flex items-center gap-4">
-    <button id="prevMonth" class="px-3 py-1 border rounded">◀</button>
-    <span id="monthYear" class="font-semibold"></span>
-    <button id="nextMonth" class="px-3 py-1 border rounded">▶</button>
-    <select id="yearSelect" class="border rounded px-3 py-1 ml-2"></select>
-  </div>
-</div>
-
-<!-- HARI -->
-<div class="grid grid-cols-7 text-center text-sm font-semibold text-slate-500 mb-4">
-  <div>Min</div><div>Sen</div><div>Sel</div>
-  <div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
-</div>
-
-<div id="calendarGrid" class="grid grid-cols-7 gap-4"></div>
-
-</section>
+    </main>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+    const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    const tasks = <?= json_encode($tasks) ?>;
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
 
-  const monthNames = [
-    "Januari","Februari","Maret","April","Mei","Juni",
-    "Juli","Agustus","September","Oktober","November","Desember"
-  ];
+    const grid = document.getElementById("calendarGrid");
+    const monthYear = document.getElementById("monthYear");
+    const detailLabel = document.getElementById("detailMonthLabel");
 
-  const tasks = <?= json_encode($tasks) ?>;
-  const notes = <?= json_encode($notes) ?>;
+    function renderCalendar() {
+        grid.innerHTML = "";
+        monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        detailLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-  let today = new Date();
-  let currentMonth = today.getMonth();
-  let currentYear = today.getFullYear();
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  const grid = document.getElementById("calendarGrid");
-  const monthYear = document.getElementById("monthYear");
-  const yearSelect = document.getElementById("yearSelect");
+        // Slot kosong awal bulan
+        for (let i = 0; i < firstDay; i++) {
+            grid.innerHTML += `<div class="calendar-day bg-white/40"></div>`;
+        }
 
-  for (let y = 2025; y <= 2099; y++) {
-    yearSelect.innerHTML += `<option ${y===currentYear?'selected':''}>${y}</option>`;
-  }
+        // Render Tanggal
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+            const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+            const hasTask = tasks[dateKey];
+            
+            // Hari ini: Full warna Biru (Notice)
+            let bgClass = isToday ? 'bg-blue-600 text-white shadow-lg z-10' : 'bg-white text-slate-600 hover:bg-slate-50';
+            // Deadline: Indikator titik merah di pojok kanan atas
+            let indicator = hasTask ? '<div class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full border border-white"></div>' : '';
 
-  function renderCalendar() {
-    grid.innerHTML = "";
-    monthYear.textContent = monthNames[currentMonth] + " " + currentYear;
-
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    for (let i = 0; i < firstDay; i++) grid.innerHTML += "<div></div>";
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateKey =
-        currentYear + "-" +
-        String(currentMonth+1).padStart(2,"0") + "-" +
-        String(d).padStart(2,"0");
-
-      let classes = "p-3 rounded-lg border";
-
-      if (
-        d === today.getDate() &&
-        currentMonth === today.getMonth() &&
-        currentYear === today.getFullYear()
-      ) {
-        classes += " bg-blue-100 border-blue-400";
-      }
-
-      let html = `<div class="font-semibold">${d}</div>`;
-
-      if (tasks[dateKey]) {
-        html += `<span class="block text-xs bg-green-100 text-green-700 rounded px-2 mt-1">Task</span>`;
-      }
-
-      if (notes[dateKey]) {
-        html += `<span class="block text-xs bg-yellow-100 text-yellow-700 rounded px-2 mt-1">Note</span>`;
-      }
-
-      grid.innerHTML += `<div class="${classes}">${html}</div>`;
+            grid.innerHTML += `
+                <div class="calendar-day relative transition-all cursor-pointer border-r border-b border-slate-50 ${bgClass}">
+                    <span class="text-[11px] font-black">${d}</span>
+                    ${indicator}
+                </div>
+            `;
+        }
     }
-  }
 
-  document.getElementById("prevMonth").onclick = () => {
-    currentMonth--;
-    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-    yearSelect.value = currentYear;
+    document.getElementById("prevMonth").onclick = () => { currentMonth--; if(currentMonth < 0){ currentMonth=11; currentYear--; } renderCalendar(); };
+    document.getElementById("nextMonth").onclick = () => { currentMonth++; if(currentMonth > 11){ currentMonth=0; currentYear++; } renderCalendar(); };
+    
     renderCalendar();
-  };
-
-  document.getElementById("nextMonth").onclick = () => {
-    currentMonth++;
-    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-    yearSelect.value = currentYear;
-    renderCalendar();
-  };
-
-  yearSelect.onchange = e => {
-    currentYear = parseInt(e.target.value);
-    renderCalendar();
-  };
-
-  renderCalendar();
 });
 </script>
-
 </body>
 </html>
