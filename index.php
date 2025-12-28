@@ -1,61 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ToDo List App</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body>
-    <div class="min-h-screen flex items-center justify-center bg-[#94B4C1]">
-        <div class="flex w-full max-w-3xl max-h-screen bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="w-1/2 bg-white text-white p-10 flex flex-col justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-16 mb-6">
-                <circle cx="6" cy="12" r="1.5" fill="red" />
-                <circle cx="12" cy="12" r="1.5" fill="orange" />
-                <circle cx="18" cy="12" r="1.5" fill="green" />
-            </svg>
-            <img src="src/img/ilust1.jpg" alt="Illustration" class="w-full h-auto mb-4">
-            <p class="text-md text-black font-md text-center mb-4">Stay organized. Stay ahead.</p>
-            </div>
+<?php
+require_once __DIR__ . '/config.php';
 
-            <div class="flex flex-col px-5 w-1/2">
-                <div class="pt-10">
-                    <h2 class="text-3xl font-bold text-center text-black">Hola Amigo!</h2>
-                    <p class="text-md text-center text-gray-600">Login to your account to continue</p>
-                </div>
-                <form action="" method="get" class="p-10 flex flex-col gap-2 space-y-2">
-                    <p class="text-md font-semibold">Username</p>
-                    <input type="text" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Username...">
-                    <p class="text-md font-semibold">Password</p>
-                    <input id="password" type="password" class="border border-gray-300 py-2 px-4 w-full rounded-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" placeholder="Masukkan Password...">
+// Ambil parameter routing sederhana
+$page = $_GET['page'] ?? 'home';
+$action = $_GET['action'] ?? 'index';
 
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" id="togglePassword" class="form-checkbox h-5 w-5 text-black">
-                        <span class="ml-2 text-gray-700">Show Password</span>
-                    </label>
-                    <button type="submit" class="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">Login</button>
-                    
-                    <div class=" text-center text-sm text-gray-600">
-                    Don't have an account? <a href="public/signup.php" class="text-blue-600 font-semibold hover:underline">Sign up</a>
-                    </div>
-                </form>
+// kalau belum login, paksa ke loginForm 
+if (!isset($_SESSION['user']) && $page !== 'user') { 
+    $page = 'user'; 
+    $action = 'loginForm'; 
+}
 
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+// Routing ke controller
+switch ($page) {
+    case 'tasks':
+        require_once __DIR__ . '/controllers/TaskController.php';
+        $controller = new TaskController($pdo);
+        break;
+    case 'calendar':
+        require_once __DIR__ . '/controllers/calendarcontroller.php';
+        $controller = new CalendarController($pdo);
+        break;
+    case 'settings':
+        require_once __DIR__ . '/controllers/SettingController.php';
+        $controller = new SettingController($pdo);
+        break;
+    case 'user':
+        require_once __DIR__ . '/controllers/usercontroller.php';
+        $controller = new UserController($pdo);
+        break;
+    default:
+        require_once __DIR__ . '/controllers/HomeController.php';
+        $controller = new HomeController($pdo);
+}
 
-<script>
-    const passwordInput = document.getElementById("password");
-    const togglePassword = document.getElementById("togglePassword");
-
-    togglePassword.addEventListener("change", function() {
-        if (this.checked) {
-        passwordInput.type = "text";   // tampilkan password
-        } else {
-        passwordInput.type = "password"; // sembunyikan password
-        }
-    });
-</script>
+// Panggil action (method di controller)
+if (method_exists($controller, $action)) {
+    $controller->$action();
+} else {
+    echo "404 - Action not found";
+}
+?>
