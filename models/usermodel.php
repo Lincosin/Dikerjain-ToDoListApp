@@ -29,14 +29,22 @@ class UserModel {
 
     // Autentikasi user (login) bisa pakai username atau email
     public function authenticate($login, $password) { 
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = :login OR email = :login"); 
+        $stmt = $this->conn->prepare("
+            SELECT * 
+            FROM users 
+            WHERE username = :login OR email = :login 
+            LIMIT 1
+        ");
         $stmt->bindParam(':login', $login); 
         $stmt->execute(); 
         $user = $stmt->fetch(PDO::FETCH_ASSOC); 
+
         if ($user && password_verify($password, $user['password_hash'])) { 
             return $user; 
-        } return false; 
+        } 
+        return false; 
     }
+
 
     // Update data user (opsional)
     public function update($id, $username, $email) {
