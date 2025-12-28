@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>DIKERJAIN | Settings</title>
   <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -21,19 +22,29 @@
 <h1 class="text-3xl font-bold mb-8">Pengaturan ⚙️</h1>
 
 <!-- PROFILE -->
-<div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center gap-6">
-  <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl font-bold text-blue-600">
-    <!-- <?= htmlspecialchars($username) ?> -->
+<div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center justify-between">
+  <!-- Bagian kiri: avatar + info -->
+  <div class="flex items-center gap-6">
+    <img id="avatar" src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" 
+         class="w-20 h-20 rounded-full border-2 border-white shadow-sm" alt="Profile">
+
+    <div>
+      <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
+      <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
+      <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
+        Ubah Profil
+      </button>
+    </div>
   </div>
 
-  <div>
-    <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
-    <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
-    <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
-      Ubah Profil
+  <!-- Bagian kanan: logout -->
+  <form method="POST" action="index.php?page=user&action=logout">
+    <button class="bg-slate-100 px-4 py-2 rounded text-red-600 font-medium hover:bg-slate-200"><i class="fa-solid fa-right-from-bracket"></i>
+      Logout
     </button>
-  </div>
+  </form>
 </div>
+
 
 <!-- PENGATURAN UMUM -->
 <div class="mb-10">
@@ -54,15 +65,6 @@
   </div>
 </div>
 
-<!-- LOGOUT -->
-<div class="border-t pt-6">
-  <form method="POST" action="index.php?page=user&action=logout">
-    <button class="text-red-600 font-medium hover:underline">
-      Logout
-    </button>
-  </form>
-</div>
-
 </section>
 </div>
 
@@ -71,7 +73,7 @@
   <div class="bg-white rounded-xl p-6 w-[400px]">
     <h2 class="text-xl font-semibold mb-4">Ubah Profil</h2>
 
-    <form method="POST">
+    <form method="POST" action="index.php?page=settings&action=update">
       <div class="mb-4">
         <label class="text-sm">Username</label>
         <input name="username" value="<?= htmlspecialchars($username) ?>"
@@ -107,6 +109,16 @@ function openProfile() {
 function closeProfile() {
   profileModal.classList.add("hidden");
 }
+
+function randomColor() { 
+  return Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'); 
+  } 
+  const avatar = document.getElementById("avatar"); 
+  const url = new URL(avatar.src); 
+  const name = url.searchParams.get("name"); 
+  const bgColor = randomColor(); 
+  avatar.src = `https://ui-avatars.com/api/?name=${name}&background=${bgColor}&color=fff`;
+
 </script>
 
 </body>
