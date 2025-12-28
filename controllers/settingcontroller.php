@@ -18,12 +18,22 @@ class SettingController {
     }
 
     public function update() {
-        $userId = $_SESSION['user']['id'];
-        $settings = [
-            'theme' => $_POST['theme'],
-            'notifications' => isset($_POST['notifications']) ? 1 : 0
-        ];
-        $this->settingModel->updateSettings($userId, $settings);
-        header('Location: index.php?page=settings&action=index');
+        $username = $_POST['username'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $userId = $_SESSION['user'];
+
+        $success = $this->settingModel->update($username, $email, $userId);
+
+        if ($success) {
+            // Update session data
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+
+            header("Location: index.php?page=settings&action=index&status=success");
+            exit;
+        } else {
+            header("Location: index.php?page=settings&action=index&status=error");
+            exit;
+        }
     }
 }

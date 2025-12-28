@@ -29,7 +29,6 @@ class UserController {
         require __DIR__ . '/../views/users/login.php';
     }
 
-
     // Proses login
     public function login() { 
         $login = $_POST['login'] ?? ''; 
