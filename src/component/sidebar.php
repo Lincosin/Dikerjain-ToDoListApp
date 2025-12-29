@@ -1,8 +1,14 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$username = $_SESSION['username'] ?? 'Guest';
+$email = $_SESSION['email'] ?? 'Guest';
+?>
+
 <aside class="w-64 bg-white border-r px-6 py-8 hidden md:flex flex-col h-screen sticky top-0">
-    <h1 class="text-2xl font-extrabold text-blue-700 mb-2">
-        DIKERJAIN
-    </h1>
-    <p class="text-xs text-slate-400 mb-10">Selamat datang, <?= htmlspecialchars($username ?? 'User') ?>!</p>
+    <img src="/src/img/logo.jpeg" class="w-36" alt="">
+    <p class="text-xs text-slate-400 mb-10">Let's start our productive days!</p>
 
     <nav class="flex flex-col gap-2 flex-grow text-slate-600 font-medium">
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'home') ? 'bg-blue-50 text-blue-700' : 'hover:bg-slate-50 hover:text-blue-600' ?>" 

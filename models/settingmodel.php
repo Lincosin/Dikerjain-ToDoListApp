@@ -8,19 +8,14 @@ class SettingModel {
         $this->pdo = $pdo;
     }
 
-    public function getSettingsByUserId($userId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM settings WHERE user_id = :user_id");
-        $stmt->execute(['user_id' => $userId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function updateSettings($userId, $settings) {
-        $stmt = $this->pdo->prepare("UPDATE settings SET theme = :theme, notifications = :notifications WHERE user_id = :user_id");
-        return $stmt->execute([
-            'theme' => $settings['theme'],
-            'notifications' => $settings['notifications'],
-            'user_id' => $userId
-        ]);
+    public function update($username, $email, $id){
+        $stmt = $this->pdo->prepare(
+            "UPDATE users SET username = :username, email = :email WHERE id = :id"
+        );
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
 
