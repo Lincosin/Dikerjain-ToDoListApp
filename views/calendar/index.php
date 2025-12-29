@@ -61,7 +61,7 @@ usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); 
         <div class="w-full p-6 border-b border-slate-100 bg-slate-50/20" style="height: 48vh;">
             <div class="grid grid-cols-7 text-center mb-3">
                 <?php foreach(['Min','Sen','Sel','Rab','Kam','Jum','Sab'] as $day): ?>
-                    <div class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em]"><?= $day ?></div>
+                    <div class="text-[9px] font-semibold text-slate-300 uppercase tracking-[0.2em]"><?= $day ?></div>
                 <?php endforeach; ?>
             </div>
             <div id="calendarGrid" class="grid grid-cols-7 gap-[1px] border border-slate-100 bg-slate-100">
