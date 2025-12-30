@@ -40,58 +40,217 @@
       <main class="flex-1 overflow-y-auto no-scrollbar p-8">
         <div class="flex flex-col xl:flex-row gap-8">
             <div class="flex-1 min-w-0">
-              <div class="mb-8">
-                    <p class="text-sm text-slate-500">Kelola dan pantau semua tugas Anda di sini.</p>
+              <div class="mb-8 flex items-center justify-between">
+                <div>
+                  <h1 class="text-2xl font-bold text-slate-700">My Tasks</h1>
+                  <span class="block border-b-4 rounded-full w-5 border-blue-600"></span>
+                </div>
+                <button onclick="openModalAdd()" class="text-white hover:text-slate-300 bg-slate-400 hover:bg-blue-700 rounded-md px-2 py-3 w-32 flex items-center justify-center font-medium text-sm transition-all">
+                  + Add Task
+                </button>
               </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <?php 
-                    $columns = [
-                        'todo' => ['title' => 'To-Do', 'bg' => 'bg-blue-500'],
-                        'progress' => ['title' => 'On Progress', 'bg' => 'bg-purple-500'],
-                        'done' => ['title' => 'Done', 'bg' => 'bg-emerald-500']
-                    ];
-
-                    foreach ($columns as $status => $col): 
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php 
+                  $columns = [
+                      'todo'    => ['title' => 'To-Do (Today)', 'bg' => 'bg-blue-500'],
+                      'pending' => ['title' => 'Pending', 'bg' => 'bg-purple-500'],
+                      'done'    => ['title' => 'Done', 'bg' => 'bg-emerald-500']
+                  ];
+                  
+                  foreach ($columns as $status => $col): 
                     ?>
-                    <div class="flex flex-col min-w-0">
-                        <div class="flex items-center justify-between mb-4 px-1">
-                            <div class="flex items-center gap-2">
-                                <div class="w-1.5 h-5 <?= $col['bg'] ?> rounded-full"></div>
-                                <h3 class="font-bold text-slate-700 text-sm tracking-wide"><?= $col['title'] ?></h3>
-                                <span class="bg-slate-200 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold">
-                                  <?= count(array_filter($tasks, fn($t) => $t['status'] === $status)) ?>
-                                </span>
-                            </div>
-                            <button class="text-slate-400 hover:text-blue-600 bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 flex justify-center font-bold text-xl">+</button>
-                        </div>
+                  <div class="flex flex-col min-w-0">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4 px-1">
+                      <div class="flex items-center gap-2">
+                        <div class="w-1.5 h-5 <?= $col['bg'] ?> rounded-full"></div>
+                        <h3 class="font-bold text-slate-700 text-sm tracking-wide"><?= $col['title'] ?></h3>
+                        <span class="bg-slate-200 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                          <?= count(array_filter($tasks, fn($t) => $t['status'] === $status)) ?>
+                        </span>
+                      </div>
+                      </div>
 
-                        <div class="space-y-4">
-                            <?php foreach ($tasks as $task): ?>
-                            <?php if ($task['status'] === $status): ?>
-                                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-grab active:cursor-grabbing">
-                                    <h4 class="font-bold text-slate-800 text-[13px] mb-1 leading-snug">
-                                        <?= htmlspecialchars($task['title']) ?>
-                                    </h4>
-                                    <p class="text-[11px] text-slate-400 mb-4 line-clamp-2">
-                                        <?= htmlspecialchars($task['description'] ?? 'No description') ?>
-                                    </p>
-                                    <div class="flex items-center justify-between">
-                                        <img class="w-5 h-5 rounded-full" src="https://i.pravatar.cc/30?u=<?= $task['user_id'] ?>">
-                                        <span class="text-[10px] text-slate-400 font-bold italic">
-                                            <?= ucfirst($task['status']) ?>
-                                        </span>
+                      <!-- Task Cards -->
+                      <div class="space-y-4" id="taskBoard">
+                        <?php foreach ($tasks as $task): ?>
+                            <?php if ($status === 'todo'): ?>
+                                <?php if ($task['status'] === 'pending' && date('Y-m-d', strtotime($task['due_date'])) === date('Y-m-d')): ?>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                                <?= htmlspecialchars($task['title']) ?>
+                                            </h4>
+                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                              '<?= $task['due_date'] ?>'
+                                              )"><i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 mb-4">
+                                            <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
+                                        </p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] text-slate-400 font-bold italic">
+                                                <?= ucfirst($task['status']) ?>
+                                            </span>
+                                            <div>
+                                              <form method="POST" action="index.php?page=tasks&action=markAsDone">
+                                                <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                                                <input type="hidden" name="status" value="done">
+                                                <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
+                                              </form>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
+                            <?php elseif ($status === 'pending'): ?>
+                                <?php if ($task['status'] === 'pending'): ?>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                                <?= htmlspecialchars($task['title']) ?>
+                                            </h4>
+                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                              '<?= $task['due_date'] ?>'
+                                              )"><i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 mb-4">
+                                            <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
+                                        </p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] text-slate-400 font-bold italic">
+                                                <?= ucfirst($task['status']) ?>
+                                            </span>
+                                            <div>
+                                              <form method="POST" action="index.php?page=tasks&action=markAsDone">
+                                                <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                                                <input type="hidden" name="status" value="done">
+                                                <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php elseif ($status === 'done'): ?>
+                                <?php if ($task['status'] === 'done'): ?>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                                <?= htmlspecialchars($task['title']) ?>
+                                            </h4>
+                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                              '<?= $task['due_date'] ?>'
+                                              )"><i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 mb-4">
+                                            <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
+                                        </p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] text-slate-400 font-bold italic">
+                                                <?= ucfirst($task['status']) ?>
+                                            </span>
+                                            <div>
+                                              <form method="POST" action="index.php?page=tasks&action=toggleStatus">
+                                                <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                                                <input type="hidden" name="status" value="<?= $task['status'] === 'done' ? 'pending' : 'done' ?>">
+                                                <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
+                                              </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                        </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
+                  </div>
+                  <?php endforeach; ?>
+              </div>
             </div>
 
+            <!-- Modal Overlay -->
+            <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+              <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-bold text-gray-800">Add New Task</h2>
+                  <button onclick="closeModalAdd()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+
+                <!-- Form -->
+                <form method="POST" action="index.php?page=tasks&action=create">
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" name="title" placeholder="Insert Title..." required
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                    <input type="date" name="due_date" required
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeModalAdd()" 
+                            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                      Cancel
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Modal Edit Overlay -->
+            <div id="EditTaskModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+              <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-bold text-gray-800">Edit Task</h2>
+                  <button onclick="closeModalEdit()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+
+                <!-- Form -->
+                <form method="POST" action="index.php?page=tasks&action=update">
+                  <input type="hidden" name="id" id="editTaskId">
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" name="title" id="editTaskTitle" required
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                    <input type="date" name="due_date" id="editTaskDate" required
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeModalEdit()" 
+                            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                      Cancel
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Sidebar Right -->
             <div class="w-full xl:w-80 flex flex-col gap-8">
-                
                 <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider">Upcoming Tasks</h3>
@@ -116,125 +275,119 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 id="calendarMonth" class="font-black text-slate-800 text-sm uppercase tracking-wider">Desember 2025</h3>
-                        <div class="flex gap-1">
-                            <button onclick="changeMonth(-1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 font-bold transition-all hover:text-blue-600"><</button>
-                            <button onclick="changeMonth(1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 font-bold transition-all hover:text-blue-600">></button>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-7 gap-y-2 mb-2 text-center">
-                        <?php foreach (['S','M','T','W','T','F','S'] as $dayName): ?>
-                            <span class="text-[10px] font-bold text-slate-300 uppercase"><?= $dayName ?></span>
-                        <?php endforeach; ?>
-                    </div>
+                <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100"> 
+                  <div class="flex items-center justify-between mb-6"> 
+                    <h3 id="calendarMonth" class="font-black text-slate-800 text-sm uppercase tracking-wider"></h3> 
+                    <div class="flex gap-1"> 
+                      <button onclick="changeMonth(-1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 font-bold transition-all hover:text-blue-600"><</button> 
+                      <button onclick="changeMonth(1)" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 font-bold transition-all hover:text-blue-600">></button> 
+                    </div> 
+                  </div> 
+                  <div class="grid grid-cols-7 gap-y-2 mb-2 text-center"> 
+                    <?php foreach (['S','M','T','W','T','F','S'] as $dayName): ?> 
+                      <span class="text-[10px] font-bold text-slate-300 uppercase">
+                        <?= $dayName ?></span> <?php endforeach; ?> 
+                      </div> 
+                      <div id="calendarGrid" class="grid grid-cols-7 text-center">
 
-                    <div id="calendarGrid" class="grid grid-cols-7 text-center"></div>
-                </div>
-
-            </div> </div>
+                      </div> 
+                    </div>
+            </div> 
+          </div>
       </main>
     </div>
   </div>
 
-  <!-- <div id="modalOverlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md flex items-center justify-center z-[100] p-4">
-      <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl transform transition-all border border-slate-100">
-          <div class="text-center mb-6">
-              <div class="w-16 h-16 bg-orange-50 text-3xl flex items-center justify-center rounded-2xl mx-auto mb-4 border border-orange-100 shadow-sm">🚀</div>
-              <h2 class="text-2xl font-black text-slate-800 mb-1 leading-tight">Hola Amigo!</h2>
-              <p class="text-slate-500 text-sm">Kamu punya beberapa tugas <span class="text-orange-500 font-bold">Pending</span> nih. Yuk, fokus selesaikan hari ini!</p>
-          </div>
-          <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all hover:scale-[1.02] active:scale-[0.98]">
-              Siap, Kerjakan!
-          </button>
-      </div>
-  </div> -->
-
   <script>
-      // Mengirim data tugas dari PHP ke JS agar kalender bisa memberi tanda titik merah
       const taskData = <?= json_encode($todayTasks ?? []) ?>;
-      
-      let date = new Date();
-      let currMonth = date.getMonth();
-      let currYear = date.getFullYear();
 
-      // Memastikan start kalender dari Des 2025 sesuai permintaan
-      if(currYear < 2025 || (currYear === 2025 && currMonth < 11)) {
-          currMonth = 11;
-          currYear = 2025;
-      }
+      let currMonth = 11; // start Desember (0 = Jan, 11 = Des)
+      let currYear = 2025;
+
+      let selectedDate = null;
 
       function renderCalendar() {
-          const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-          const calendarGrid = document.querySelector("#calendarGrid");
-          const monthTitle = document.querySelector("#calendarMonth");
-          
-          let firstDayOfMonth = new Date(currYear, currMonth, 1).getDay();
-          let lastDateOfMonth = new Date(currYear, currMonth + 1, 0).getDate();
-          
-          monthTitle.innerText = `${monthNames[currMonth]} ${currYear}`;
-          calendarGrid.innerHTML = "";
+        const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+        const calendarGrid = document.querySelector("#calendarGrid");
+        const monthTitle = document.querySelector("#calendarMonth");
 
-          // Menambahkan slot kosong untuk hari sebelum tanggal 1
-          for (let i = 0; i < firstDayOfMonth; i++) {
-              calendarGrid.innerHTML += `<span></span>`;
-          }
+        let firstDayOfMonth = new Date(currYear, currMonth, 1).getDay();
+        let lastDateOfMonth = new Date(currYear, currMonth + 1, 0).getDate();
 
-          // Render Angka Tanggal
-          for (let i = 1; i <= lastDateOfMonth; i++) {
-              let isToday = i === new Date().getDate() && currMonth === new Date().getMonth() && currYear === new Date().getFullYear();
-              
-              // Cek apakah tanggal ini ada tugas di database
-              let formattedDate = `${currYear}-${String(currMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-              let hasTask = taskData.some(t => t.due_date.startsWith(formattedDate));
+        monthTitle.innerText = `${monthNames[currMonth]} ${currYear}`;
+        calendarGrid.innerHTML = "";
 
-              calendarGrid.innerHTML += `
-                  <div class="relative flex flex-col items-center justify-center py-1 group cursor-pointer">
-                      <span class="text-[11px] font-bold h-7 w-7 flex items-center justify-center rounded-full transition-all
-                          ${isToday ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-slate-600 hover:bg-slate-50'}">
-                          ${i}
-                      </span>
-                      ${hasTask ? '<div class="absolute -bottom-0.5 w-1 h-1 bg-red-500 rounded-full"></div>' : ''}
-                  </div>`;
-          }
-      }
+        for (let i = 0; i < firstDayOfMonth; i++) {
+          calendarGrid.innerHTML += `<span></span>`;
+        }
 
-      // Navigasi Bulan (Batas 2099)
-      function changeMonth(step) {
-          currMonth += step;
-          if (currMonth < 0 || currMonth > 11) {
-              date = new Date(currYear, currMonth, new Date().getDate());
-              currYear = date.getFullYear();
-              currMonth = date.getMonth();
+        for (let i = 1; i <= lastDateOfMonth; i++) {
+          let today = new Date();
+          let formattedDate = `${currYear}-${String(currMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+
+          let isToday = i === today.getDate() && currMonth === today.getMonth() && currYear === today.getFullYear();
+          let isSelected = formattedDate === selectedDate;
+          let hasTask = taskData.some(t => t.due_date.startsWith(formattedDate));
+
+          // Tentukan kelas CSS
+          let baseClass = "text-[11px] font-bold h-7 w-7 flex items-center justify-center rounded-full transition-all";
+          let styleClass = "";
+          if (isSelected) {
+            styleClass = "bg-blue-700 text-white shadow-md"; // klik
+          } else if (isToday) {
+            styleClass = "bg-blue-300 text-white shadow"; // hari ini
           } else {
-              date = new Date();
+            styleClass = "text-slate-600 hover:bg-slate-50"; // default
           }
 
-          // Batas Bawah: Desember 2025
-          if (currYear < 2025 || (currYear === 2025 && currMonth < 11)) {
-              currYear = 2025; currMonth = 11;
-          }
-          // Batas Atas: Desember 2099
-          if (currYear > 2099) {
-              currYear = 2099; currMonth = 11;
-          }
-
-          renderCalendar();
+          calendarGrid.innerHTML += `
+            <div onclick="selectDate('${formattedDate}')" class="relative flex flex-col items-center justify-center py-1 group cursor-pointer">
+              <span class="${baseClass} ${styleClass}">${i}</span>
+              ${hasTask ? '<div class="absolute -bottom-0.5 w-1 h-1 bg-red-500 rounded-full"></div>' : ''}
+            </div>`;
+        }
       }
 
-      // Fungsi menutup modal
-      function closeModal() {
-          const modal = document.getElementById('modalOverlay');
-          modal.style.opacity = '0';
-          modal.style.transform = 'scale(0.95)';
-          setTimeout(() => modal.style.display = 'none', 300);
+      function selectDate(date) {
+        selectedDate = date;
+        renderCalendar();
+        loadTasks(date);
       }
 
-      // Jalankan kalender saat pertama kali dimuat
+      function changeMonth(step) {
+        currMonth += step;
+        if (currMonth < 0) {
+          currMonth = 11;
+          currYear--;
+        } else if (currMonth > 11) {
+          currMonth = 0;
+          currYear++;
+        }
+
+        // batas bawah: Des 2025
+        if (currYear < 2025 || (currYear === 2025 && currMonth < 11)) {
+          currYear = 2025;
+          currMonth = 11;
+        }
+        // batas atas: Des 2099
+        if (currYear > 2099) {
+          currYear = 2099;
+          currMonth = 11;
+        }
+
+        renderCalendar();
+      }
+
+      // render pertama kali
       renderCalendar();
 
+      function loadTasks(date) {
+        fetch("index.php?page=tasks&action=filterByDate&date=" + date)
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById("taskBoard").innerHTML = html;
+          });
+      }
 
       function randomColor() { 
         return Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'); 
@@ -244,7 +397,39 @@
         const name = url.searchParams.get("name"); 
         const bgColor = randomColor(); 
         avatar.src = `https://ui-avatars.com/api/?name=${name}&background=${bgColor}&color=fff`;
-  </script>
+        
+        function openModalAdd() { 
+          document.getElementById('taskModal').classList.remove('hidden'); 
+        } 
+        
+        function closeModalAdd() { 
+          document.getElementById('taskModal').classList.add('hidden'); 
+        }
 
+        function openModalEdit(id, title, dueDate) {
+          document.getElementById('editTaskId').value = id;
+          document.getElementById('editTaskTitle').value = title;
+          document.getElementById('editTaskDate').value = dueDate;
+
+          document.getElementById('EditTaskModal').classList.remove('hidden');
+        }
+
+        function closeModalEdit() {
+          document.getElementById('EditTaskModal').classList.add('hidden');
+        }
+
+        function markAsDone(taskId) {
+          fetch(`index.php?page=tasks&action=markAsDone&id=${taskId}`, {
+            method: 'POST'
+          })
+          .then(() => {
+            // Setelah menandai sebagai selesai, muat ulang tugas
+            if (selectedDate) {
+              loadTasks(selectedDate);
+            }
+          });
+        }
+
+  </script>
 </body>
 </html>
