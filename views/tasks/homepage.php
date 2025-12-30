@@ -241,9 +241,8 @@
                 </form>
             </div>
         </div>
-    </div>
 
-    <!-- Halaman Daftar Task -->
+        <!-- Halaman Daftar Task -->
         <div class="daftartask">
             <!-- Pembungkus dari halaman Task -->
             <div class="tasksimple">
@@ -251,7 +250,7 @@
                 <div class="simpletaskitems">
                     <!-- checkbox di daftar task -->
                     <div class="taskcheck">
-                        <input type="checkbox" name="" id="">
+                        <input style="margin-bottom: 10px;"type="checkbox" name="" id="">
                     </div>
                     <!-- header di daftar task -->
                     <div class="taskheader">
@@ -286,7 +285,7 @@
                 <div class="advtaskitems">
                     <!-- checkbox di daftar task -->
                     <div class="taskcheck">
-                        <input type="checkbox" name="" id="">
+                        <input style="margin-bottom: 10px;" type="checkbox" name="" id="">
                     </div>
                     <!-- header di daftar task -->
                     <div class="taskheader">
@@ -317,7 +316,7 @@
                 <!-- muncul disaat belum ada task advance -->
                 <p style="color:gray;margin-left:20px;">Belum ada advance task.</p>
             </div>
-            </div>
         </div>
+    </div>
 </body>
 </html>
