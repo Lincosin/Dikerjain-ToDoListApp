@@ -19,7 +19,7 @@
 <!-- CONTENT -->
 <section class="flex-1 bg-white p-10 overflow-y-auto">
 
-<h1 class="text-3xl font-bold mb-8">Pengaturan <i class="fa-solid fa-gears"></i></h1>
+<h1 class="text-3xl font-bold mb-8">Settings <i class="fa-solid fa-gears"></i></h1>
 
 <!-- PROFILE -->
 <div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center justify-between">
@@ -32,7 +32,7 @@
       <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
       <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
       <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
-        Ubah Profil
+        Changes Profile
       </button>
     </div>
   </div>
@@ -48,11 +48,11 @@
 
 <!-- PENGATURAN UMUM -->
 <div class="mb-10">
-  <h2 class="text-lg font-semibold mb-4">Pengaturan Umum</h2>
+  <h2 class="text-lg font-semibold mb-4">General Settings</h2>
 
   <!-- NOTIFIKASI -->
   <div class="flex justify-between items-center border rounded-lg p-4">
-    <span>Notifikasi</span>
+    <span>Notification</span>
     <label class="relative inline-flex items-center cursor-pointer">
       <input type="checkbox" checked class="sr-only peer">
       <div class="w-11 h-6 bg-slate-300 rounded-full

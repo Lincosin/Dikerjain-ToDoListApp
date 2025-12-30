@@ -11,20 +11,13 @@ $email = $_SESSION['email'] ?? 'Guest';
     <p class="text-xs text-slate-400 mb-10">Let's start our productive days!</p>
 
     <nav class="flex flex-col gap-2 flex-grow text-slate-600 font-medium">
-        <a data-active="<?= ($page === 'home') ? 'true' : 'false' ?>" 
-        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all
-          hover:bg-slate-50 hover:text-blue-600
-          data-[active=true]:bg-blue-50 data-[active=true]:text-blue-700" 
-           href="index.php?page=home">
-            <span class="text-lg"><i class="fa-solid fa-house"></i></span> Home
-        </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'tasks') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=tasks">
-            <span class="text-lg"><i class="fa-solid fa-list-check"></i></span> Tasks
+            <span class="text-lg"><i class="fa-solid fa-list-check"></i></span> My Tasks
         </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'calendar') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=calendar">
-            <span class="text-lg"><i class="fa-solid fa-calendar"></i></span> Kalender
+            <span class="text-lg"><i class="fa-solid fa-calendar"></i></span> Calendar
         </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'settings') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=settings">
