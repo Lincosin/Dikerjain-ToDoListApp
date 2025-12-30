@@ -48,7 +48,7 @@ usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); 
         
         <header class="p-6 border-b border-slate-50 flex justify-between items-center bg-white shrink-0">
             <div>
-                <h1 class="text-2xl font-semibold text-slate-800 tracking-tight">Eksplorasi Jadwal 📅</h1>
+                <h1 class="text-2xl font-semibold text-slate-800 tracking-tight">Eksplorasi Jadwal <i class="fa-solid fa-calendar-days"></i></h1>
                 <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Kelola produktivitas harian Anda</p>
             </div>
             <div class="flex items-center bg-slate-100 p-1 rounded-lg gap-1">
@@ -71,7 +71,7 @@ usort($allMonthTasks, function($a, $b) { return strcmp($a['date'], $b['date']); 
         <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-white">
             <div class="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
                 <h2 class="text-sm font-semibold text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                    📋 Rincian Deadline <span id="detailMonthLabel" class="text-blue-600"></span>
+                    <i class="fa-solid fa-clipboard-list"></i> Rincian Deadline <span id="detailMonthLabel" class="text-blue-600"></span>
                 </h2>
                 <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded"><?= count($allMonthTasks) ?> Tugas</span>
             </div>

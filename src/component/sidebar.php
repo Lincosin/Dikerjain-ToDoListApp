@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $username = $_SESSION['username'] ?? 'Guest';
 $email = $_SESSION['email'] ?? 'Guest';
 ?>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <aside class="w-64 bg-white border-r px-6 py-4 hidden md:flex flex-col h-screen sticky top-0">
     <img src="/src/img/logo.jpeg" class="w-36" alt="">
     <p class="text-xs text-slate-400 mb-10">Let's start our productive days!</p>
@@ -16,19 +16,19 @@ $email = $_SESSION['email'] ?? 'Guest';
           hover:bg-slate-50 hover:text-blue-600
           data-[active=true]:bg-blue-50 data-[active=true]:text-blue-700" 
            href="index.php?page=home">
-            <span class="text-lg">🏠</span> Home
+            <span class="text-lg"><i class="fa-solid fa-house"></i></span> Home
         </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'tasks') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=tasks">
-            <span class="text-lg">✅</span> Tasks
+            <span class="text-lg"><i class="fa-solid fa-list-check"></i></span> Tasks
         </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'calendar') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=calendar">
-            <span class="text-lg">📅</span> Kalender
+            <span class="text-lg"><i class="fa-solid fa-calendar"></i></span> Kalender
         </a>
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'settings') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
            href="index.php?page=settings">
-            <span class="text-lg">⚙️</span> Settings
+            <span class="text-lg"><i class="fa-solid fa-gear"></i></span> Settings
         </a>
     </nav>
 

@@ -19,7 +19,7 @@
 <!-- CONTENT -->
 <section class="flex-1 bg-white p-10 overflow-y-auto">
 
-<h1 class="text-3xl font-bold mb-8">Pengaturan ⚙️</h1>
+<h1 class="text-3xl font-bold mb-8">Pengaturan <i class="fa-solid fa-gears"></i></h1>
 
 <!-- PROFILE -->
 <div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center justify-between">
