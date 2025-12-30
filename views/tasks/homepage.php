@@ -49,5 +49,82 @@
             </div>
         </div>
     </div>
+
+    <!-- Halaman Daftar Task -->
+        <div class="daftartask">
+            <!-- Pembungkus dari halaman Task -->
+            <div class="tasksimple">
+                <!-- semua data di daftar task -->
+                <div class="simpletaskitems">
+                    <!-- checkbox di daftar task -->
+                    <div class="taskcheck">
+                        <input type="checkbox" name="" id="">
+                    </div>
+                    <!-- header di daftar task -->
+                    <div class="taskheader">
+                        <p class="taskDate" style="margin-bottom: 5px;"></p>
+                    </div>
+                    <!-- isi task -->
+                    <div class="tasktitle">
+                        <h3 style="margin-bottom: 5px;"></h3>
+                    </div>
+                    <!-- footer di daftar task -->
+                    <div class="simpletaskfooter">
+                        <!-- tombol untuk edit dan hapus task -->
+                        <div class="taskactions">
+                            <a href="simple-edit.php" style="color: blue;">Edit</a>
+                            <a href="#" style="color: red;">Hapus</a>
+                        </div>
+                        <!-- status dari task -->
+                        <div class="taskstatus">
+                            <span class="pending">Pending</span>
+                            <!-- muncul jika task sudah selesai -->
+                            <span class="done">Done</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- muncul disaat belum ada task simple -->
+                <p style="color:gray;margin-left:20px;">Belum ada task.</p>
+            </div>
+            <hr style="margin: 20px 0px; border: 2px solid lightblue;">
+            <!-- Pembungkus dari halaman Task -->
+            <div class="taskadvance">
+                <!-- semua data di daftar task -->
+                <div class="advtaskitems">
+                    <!-- checkbox di daftar task -->
+                    <div class="taskcheck">
+                        <input type="checkbox" name="" id="">
+                    </div>
+                    <!-- header di daftar task -->
+                    <div class="taskheader">
+                        <p class="taskDate" style="margin-bottom: 5px;"></p>
+                    </div>
+                    <!-- isi task -->
+                    <div class="tasktitle">
+                        <h3 style="margin-bottom: 5px;"></h3>
+                    </div>
+                    <div class="taskdescription">
+                        <p style="margin-bottom: 5px;"></p>
+                    </div>
+                    <!-- footer di daftar task -->
+                    <div class="advtaskfooter">
+                        <!-- tombol untuk edit dan hapus task -->
+                        <div class="taskactions">
+                            <a href="advance-edit.php" style="color: blue;">Edit</a>
+                            <a href="#" style="color: red;">Hapus</a>
+                        </div>
+                        <!-- status dari task -->
+                        <div class="taskstatus">
+                            <span class="pending">Pending</span>
+                            <!-- muncul jika task sudah selesai -->
+                            <span class="done">Done</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- muncul disaat belum ada task advance -->
+                <p style="color:gray;margin-left:20px;">Belum ada advance task.</p>
+            </div>
+            </div>
+        </div>
 </body>
 </html>
