@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config.php';
 
 // Ambil parameter routing sederhana
-$page = $_GET['page'] ?? 'home';
+$page = $_GET['page'] ?? 'tasks';
 $action = $_GET['action'] ?? 'index';
 
 // kalau belum login, paksa ke loginForm 
@@ -13,16 +13,12 @@ if (!isset($_SESSION['user']) && $page !== 'user') {
 
 // Routing ke controller
 switch ($page) {
-    case 'tasks':
-        require_once __DIR__ . '/controllers/TaskController.php';
-        $controller = new TaskController($pdo);
-        break;
     case 'calendar':
         require_once __DIR__ . '/controllers/calendarcontroller.php';
         $controller = new CalendarController($pdo);
         break;
     case 'settings':
-        require_once __DIR__ . '/controllers/SettingController.php';
+        require_once __DIR__ . '/controllers/settingcontroller.php';
         $controller = new SettingController($pdo);
         break;
     case 'user':
@@ -30,8 +26,8 @@ switch ($page) {
         $controller = new UserController($pdo);
         break;
     default:
-        require_once __DIR__ . '/controllers/HomeController.php';
-        $controller = new HomeController($pdo);
+        require_once __DIR__ . '/controllers/taskcontroller.php';
+        $controller = new TaskController($pdo);
 }
 
 // Panggil action (method di controller)
