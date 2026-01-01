@@ -13,37 +13,32 @@ class CalendarController {
     }
 
     public function index() {
-        // Cek apakah session sudah dimulai di index.php, jika belum maka mulai
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
-        // Mengambil nama user dari session atau default 'Guest'
-        $username = $_SESSION['username'] ?? 'Guest Amigo';
 
-        // Mengambil bulan dan tahun dari URL (untuk navigasi kalender)
-        // Jika tidak ada di URL, gunakan bulan dan tahun saat ini
-        $month = isset($_GET['month']) ? $_GET['month'] : date('m');
-        $year = isset($_GET['year']) ? $_GET['year'] : date('Y');
+        $userId = $_SESSION['user'] ?? null;
 
-        /**
-         * Mengambil data dari Model.
-         * Kita menggunakan try-catch agar jika terjadi error database, 
-         * halaman kalender tetap bisa tampil meskipun kosong.
-         */
+        $month = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('n');
+        $year  = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
+
         try {
-            $tasks = $this->model->getTasksForMonth($month, $year);
-            $notes = $this->model->getNotesForMonth($month, $year);
+            $rows = $this->model->getTasksForMonth($month, $year, $userId); // flat rows
         } catch (Exception $e) {
-            $tasks = [];
-            $notes = [];
-            // Log error bisa ditambahkan di sini jika perlu
+            $rows = [];
         }
 
-        // Pastikan variabel page ada agar sidebar tidak error (Undefined Variable $page)
-        $page = 'calendar';
+        // bikin versi keyed by tanggal untuk indikator kalender
+        $tasksByDate = [];
+        foreach ($rows as $row) {
+            $dateKey = date('Y-m-d', strtotime($row['due_date']));
+            if (!isset($tasksByDate[$dateKey])) {
+                $tasksByDate[$dateKey] = [];
+            }
+            $tasksByDate[$dateKey][] = $row;
+        }
 
-        // Memanggil file view kalender
+        $page = 'calendar';
         require_once __DIR__ . '/../views/calendar/index.php';
     }
 }
