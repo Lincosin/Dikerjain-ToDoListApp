@@ -8,6 +8,13 @@ class TaskModel {
         $this->pdo = $pdo;
     }
 
+    public function getTaskById($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM tugas WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // Ambil semua task dengan due_date = hari ini 
     public function getToday() {
         $today = date('Y-m-d'); // format YYYY-MM-DD
@@ -68,20 +75,26 @@ class TaskModel {
     }
 
     public function UpdateTaskSimple($id, $title, $due_date) {
-        $stmt = $this->pdo->prepare("UPDATE tugas SET title = :title, due_date = :due_date WHERE id = :id");
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':due_date', $due_date);
-        $stmt->bindParam(':id', $id);
+        $stmt = $this->pdo->prepare(
+            "UPDATE tugas SET title = :title, due_date = :due_date WHERE id = :id"
+        );
+        $stmt->bindValue(':title', $title, PDO::PARAM_STR);
+        $stmt->bindValue(':due_date', $due_date, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
     }
 
-    public function updateTaskAdvance($id, $title, $description, $due_date, $status) {
-        $stmt = $this->pdo->prepare("UPDATE tugas SET title = :title, description = :description, due_date = :due_date, status = :status WHERE id = :id");
+    public function updateTaskAdvance($id, $title, $description, $due_date, $user_id) {
+        $stmt = $this->pdo->prepare("
+            UPDATE tugas 
+            SET title = :title, description = :description, due_date = :due_date 
+            WHERE id = :id AND user_id = :user_id
+        ");
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':due_date', $due_date);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
     }
 

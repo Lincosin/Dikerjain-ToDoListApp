@@ -9,6 +9,14 @@
     /* Menghilangkan scrollbar pada Chrome/Safari dan Firefox tanpa mematikan fungsinya */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-in-out;
+    }
   </style>
 </head>
 
@@ -76,17 +84,25 @@
                         <?php foreach ($tasks as $task): ?>
                             <?php if ($status === 'todo'): ?>
                                 <?php if ($task['status'] === 'pending' && date('Y-m-d', strtotime($task['due_date'])) === date('Y-m-d')): ?>
-                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
-                                                <?= htmlspecialchars($task['title']) ?>
-                                            </h4>
-                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
-                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
-                                              '<?= $task['due_date'] ?>'
-                                              )"><i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                        </div>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                                        onclick="togglePopup(
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>',
+                                            '<?= htmlspecialchars($task['description'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
+                                        )">
+                                      <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                          <?= htmlspecialchars($task['title']) ?>
+                                        </h4>
+                                        <button onclick="event.stopPropagation(); openModalEdit(
+                                            '<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>'
+                                          )">
+                                          <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                      </div>
                                         <p class="text-[11px] text-slate-400 mb-4">
                                             <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                                         </p>
@@ -94,29 +110,30 @@
                                             <span class="text-[10px] text-slate-400 font-bold italic">
                                                 <?= ucfirst($task['status']) ?>
                                             </span>
-                                            <div>
-                                              <form method="POST" action="index.php?page=tasks&action=markAsDone">
-                                                <input type="hidden" name="id" value="<?= $task['id'] ?>">
-                                                <input type="hidden" name="status" value="done">
-                                                <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
-                                              </form>
-                                            </div>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                             <?php elseif ($status === 'pending'): ?>
                                 <?php if ($task['status'] === 'pending'): ?>
-                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
-                                                <?= htmlspecialchars($task['title']) ?>
-                                            </h4>
-                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
-                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
-                                              '<?= $task['due_date'] ?>'
-                                              )"><i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                        </div>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                                        onclick="togglePopup(
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>',
+                                            '<?= htmlspecialchars($task['description'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
+                                        )">
+                                      <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                          <?= htmlspecialchars($task['title']) ?>
+                                        </h4>
+                                        <button onclick="event.stopPropagation(); openModalEdit(
+                                            '<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>'
+                                          )">
+                                          <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                      </div>
                                         <p class="text-[11px] text-slate-400 mb-4">
                                             <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                                         </p>
@@ -136,17 +153,25 @@
                                 <?php endif; ?>
                             <?php elseif ($status === 'done'): ?>
                                 <?php if ($task['status'] === 'done'): ?>
-                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
-                                                <?= htmlspecialchars($task['title']) ?>
-                                            </h4>
-                                            <button onclick="openModalEdit('<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
-                                              '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
-                                              '<?= $task['due_date'] ?>'
-                                              )"><i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                        </div>
+                                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                                        onclick="togglePopup(
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>',
+                                            '<?= htmlspecialchars($task['description'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
+                                        )">
+                                      <div class="flex items-center justify-between mb-1">
+                                        <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                                          <?= htmlspecialchars($task['title']) ?>
+                                        </h4>
+                                        <button onclick="event.stopPropagation(); openModalEdit(
+                                            '<?= htmlspecialchars($task['id'], ENT_QUOTES) ?>',
+                                            '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
+                                            '<?= $task['due_date'] ?>'
+                                          )">
+                                          <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                      </div>
                                         <p class="text-[11px] text-slate-400 mb-4">
                                             <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                                         </p>
@@ -172,7 +197,58 @@
               </div>
             </div>
 
-            <!-- Modal Overlay -->
+            <!-- overlay detail -->
+            <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="togglePopup()"></div>                        
+            <div id="popup" class="fixed top-0 right-0 h-full w-[500px] 
+              bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l
+              transform translate-x-full transition-all duration-500 ease-in-out z-50">
+              <div class="p-6 space-y-6 animate-fadeIn">
+                
+                <!-- Header -->
+                <div class="flex justify-between items-center border-b pb-4">
+                  <h4 class="text-lg font-bold flex items-center gap-2">
+                  <i class="fa-solid fa-clipboard-list text-stone-400"></i>
+                  Task Detail
+                  </h4>
+                  <button onclick="togglePopup()" 
+                          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    Tutup
+                  </button>
+                </div>
+
+                <!-- Title -->
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-circle-info text-green-500"></i>
+                  <span class="text-lg font-bold">Title:</span>
+                  <div id="PopUPViewTitle" class="text-base font-medium"></div>
+                </div>
+
+                <!-- Date -->
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-calendar-alt text-red-500"></i>
+                  <span class="text-lg font-bold">Deadline:</span>
+                  <span id="PopUPViewDate" 
+                        class="text-sm font-medium bg-red-100 text-red-700 px-2 py-0.5 rounded"></span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-check-to-slot text-blue-500 mt-1"></i>
+                  <span class="text-lg font-bold">Status:</span>
+                  <div id="PopUPViewStatus" 
+                      class="text-base font-medium"></div>
+                </div>
+
+                <!-- Description -->
+                <div class="flex items-start gap-2">
+                  <i class="fa-solid fa-align-left text-yellow-500 mt-1"></i>
+                  <div id="PopUPViewDescription" 
+                      class="text-sm text-slate-600 bg-yellow-50 p-3 rounded-lg shadow-inner w-full"></div>
+                </div>
+
+              </div>
+            </div>
+            
+            <!-- Modal Add Overlay -->
             <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
               <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
                 <!-- Header -->
@@ -182,31 +258,32 @@
                 </div>
 
                 <!-- Form -->
-                <form method="POST" action="index.php?page=tasks&action=create">
+                <form method="POST" action="index.php?page=tasks&action=create" id="addTaskForm">
                   <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                    <input type="text" name="title" placeholder="Insert Title..." required
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+                    <input type="text" name="title" placeholder="Insert Title..." required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                   </div>
 
                   <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                    <input type="date" name="due_date" required
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
-                  </div>
-
-                  <!-- Actions -->
-                  <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeModalAdd()" 
-                            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
-                      Cancel
-                    </button>
-                    <button type="submit" 
-                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
-                      Save
-                    </button>
+                    <input type="datetime-local" name="due_date" id="editTaskDate" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                   </div>
                 </form>
+
+                  <!-- Actions -->
+                  <div class="flex justify-between gap-3">
+                      <a href="index.php?page=tasks&action=createAdvance" class="text-indigo-600 hover:text-indigo-700 hover:underline underline-offset-2"> Advance Task </a>
+                    <div class="flex justify-end gap-3">
+                      <button type="button" onclick="closeModalAdd()" 
+                              class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                        Cancel
+                      </button>
+                      <button type="submit"  form="addTaskForm"
+                              class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                        Save
+                      </button>
+                    </div>
+                  </div>
               </div>
             </div>
 
@@ -220,61 +297,55 @@
                 </div>
 
                 <!-- Form -->
-                <form method="POST" action="index.php?page=tasks&action=update">
+                <form method="POST" action="index.php?page=tasks&action=update" id="editTaskForm">
                   <input type="hidden" name="id" id="editTaskId">
                   <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                    <input type="text" name="title" id="editTaskTitle" required
+                    <input type="text" name="title" id="editTaskTitle"
                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                   </div>
-
+                    
                   <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                    <input type="date" name="due_date" id="editTaskDate" required
+                    <input type="datetime-local" name="due_date" id="editTaskDate"
                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                   </div>
+                </form>
+                
+                <!-- Actions -->
+                <div>
+                  <a id="advanceEditLink" href="" class="text-indigo-600 hover:text-indigo-700 hover:underline underline-offset-2">
+                    Advance Edit
+                  </a>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                  <!-- Delete (form terpisah) -->
+                  <form method="POST" action="index.php?page=tasks&action=delete">
+                    <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                    <button type="submit"
+                            class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 text-sm">
+                      <i class="fa-solid fa-trash-can"></i> Delete
+                    </button>
+                  </form>
 
-                  <!-- Actions -->
-                  <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeModalEdit()" 
-                            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                  <!-- Cancel + Save -->
+                  <div class="flex gap-3">
+                    <button type="button" onclick="closeModalEdit()"
+                            class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm">
                       Cancel
                     </button>
-                    <button type="submit" 
-                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                    <!-- Save submit ke form update -->
+                    <button type="submit" form="editTaskForm"
+                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-sm">
                       Save
                     </button>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
 
             <!-- Sidebar Right -->
             <div class="w-full xl:w-80 flex flex-col gap-8">
-                <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider">Upcoming Tasks</h3>
-                        <a href="#" class="text-blue-500 text-[10px] font-bold hover:underline">See All</a>
-                    </div>
-                    <div class="space-y-4">
-                        <?php if (!empty($todayTasks)): 
-                            foreach (array_slice($todayTasks, 0, 3) as $task): ?>
-                            <div class="flex items-center gap-4 group cursor-pointer hover:bg-slate-50 p-2 rounded-xl transition-all">
-                                <div class="w-10 h-10 bg-slate-50 rounded-xl flex flex-col items-center justify-center border border-slate-100 group-hover:bg-blue-50 transition-colors">
-                                    <span class="text-[9px] font-bold text-blue-500 leading-none uppercase"><?= date('M', strtotime($task['due_date'])) ?></span>
-                                    <span class="text-xs font-black text-slate-700"><?= date('d', strtotime($task['due_date'])) ?></span>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="text-xs font-bold text-slate-700 truncate"><?= htmlspecialchars($task['title']) ?></h4>
-                                    <p class="text-[9px] text-slate-400 italic">Deadline Mendekat</p>
-                                </div>
-                            </div>
-                        <?php endforeach; else: ?>
-                            <p class="text-[10px] text-slate-400 italic text-center py-2">Tidak ada tugas terdekat.</p>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
                 <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100"> 
                   <div class="flex items-center justify-between mb-6"> 
                     <h3 id="calendarMonth" class="font-black text-slate-800 text-sm uppercase tracking-wider"></h3> 
@@ -299,10 +370,16 @@
   </div>
 
   <script>
-      const taskData = <?= json_encode($todayTasks ?? []) ?>;
+    const now = new Date();
+    const offset = now.getTimezoneOffset(); // dalam menit
+    const localTime = new Date(now.getTime() - offset * 60000);
+    const formatted = localTime.toISOString().slice(0,16);
+    document.getElementById('editTaskDate').value = formatted;
 
-      let currMonth = 11; // start Desember (0 = Jan, 11 = Des)
-      let currYear = 2025;
+      const taskData = <?= json_encode($todayTasks ?? []) ?>;
+      let today = new Date();
+      let currMonth = today.getMonth();   // ambil bulan sekarang
+      let currYear = today.getFullYear(); // ambil tahun sekarang
 
       let selectedDate = null;
 
@@ -316,6 +393,7 @@
 
         monthTitle.innerText = `${monthNames[currMonth]} ${currYear}`;
         calendarGrid.innerHTML = "";
+
 
         for (let i = 0; i < firstDayOfMonth; i++) {
           calendarGrid.innerHTML += `<span></span>`;
@@ -411,6 +489,9 @@
           document.getElementById('editTaskTitle').value = title;
           document.getElementById('editTaskDate').value = dueDate;
 
+          document.getElementById('advanceEditLink').href = 
+            "index.php?page=tasks&action=updateAdvance&id=" + id;
+
           document.getElementById('EditTaskModal').classList.remove('hidden');
         }
 
@@ -423,13 +504,53 @@
             method: 'POST'
           })
           .then(() => {
-            // Setelah menandai sebagai selesai, muat ulang tugas
             if (selectedDate) {
               loadTasks(selectedDate);
             }
           });
         }
 
+        function togglePopup(viewTitle, viewDate, viewDescription, viewStatus) {
+          // Title
+          document.getElementById('PopUPViewTitle').innerText = viewTitle || "";
+
+          // Date
+          document.getElementById('PopUPViewDate').innerText = viewDate || "";
+
+          // Description
+          const descEl = document.getElementById('PopUPViewDescription');
+          descEl.innerText = viewDescription && viewDescription.trim() !== "" 
+            ? viewDescription 
+            : "Tidak ada deskripsi tugas.";
+
+          // Status
+          const statusEl = document.getElementById('PopUPViewStatus');
+          statusEl.innerText = viewStatus || "";
+          statusEl.className = "text-base font-medium px-2 py-1 rounded";
+          if(viewStatus && viewStatus.toLowerCase() === "done") {
+            statusEl.classList.add("bg-green-200","text-green-800");
+          } else if(viewStatus && viewStatus.toLowerCase() === "pending") {
+            statusEl.classList.add("bg-indigo-200","text-indigo-800");
+          }
+
+          // Popup + overlay toggle
+          const popup = document.getElementById('popup');
+          const overlay = document.getElementById('popupOverlay');
+          popup.classList.toggle('translate-x-full');
+          popup.classList.toggle('translate-x-0');
+          overlay.classList.toggle('hidden');
+        }
+
+        document.getElementById('popupOverlay').addEventListener('click', () => {
+          const popup = document.getElementById('popup');
+          const overlay = document.getElementById('popupOverlay');
+
+          if (!overlay.classList.contains('hidden')) {
+            popup.classList.add('translate-x-full');
+            popup.classList.remove('translate-x-0');
+            overlay.classList.add('hidden');
+          }
+        });
   </script>
 </body>
 </html>

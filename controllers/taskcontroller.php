@@ -39,18 +39,20 @@ class TaskController {
             $duedate = $_POST['due_date'];
             $user_id = $_SESSION['user'];
 
+            // ubah format dari HTML ke MySQL DATETIME
+            $dueDate = str_replace('T', ' ', $duedate) . ':00';
+
             $taskModel = new TaskModel($this->pdo);
-            $taskModel->createSimpleTask($title, $duedate, $user_id);
+            $taskModel->createSimpleTask($title, $dueDate, $user_id);
 
             header('Location: /tasks');
             exit();
         }
-
-        // require_once __DIR__ . '/../views/tasks/create.php';
     }
 
     public function createAdvance() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            date_default_timezone_set('Asia/Singapore');
             $title = $_POST['title'];
             $description = $_POST['description'];
             $due_date = $_POST['due_date'];
@@ -62,18 +64,30 @@ class TaskController {
             exit();
         }
 
-        // require_once __DIR__ . '/../views/tasks/create.php';
+        require_once __DIR__ . '/../views/tasks/advance-task.php';
     }
 
-    public function delete($id) {
-        $taskModel = new TaskModel($this->pdo);
-        $taskModel->deleteTask($id);
+    public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $user_id = $_SESSION['user'];
 
-        header('Location: /tasks');
-        exit();
+            $taskModel = new TaskModel($this->pdo);
+            $task = $taskModel->getTaskById($id);
+
+            if (!$task || $task['user_id'] !== $user_id) {
+                header('Location: /tasks');
+                exit();
+            }
+
+            $taskModel->deleteTask($id);
+            header('Location: /tasks');
+            exit();
+        }
     }
 
     public function update() {
+        date_default_timezone_set('Asia/Singapore');
         $id = $_POST['id'];
         $title = $_POST['title'];
         $dueDate = $_POST['due_date'];
@@ -86,16 +100,25 @@ class TaskController {
     }
 
     public function updateAdvance() {
-        $id = $_POST['id'];
-        $title = $_POST['title'];
-        $description = $_POST['description'];
-        $dueDate = $_POST['due_date'];
-        $status = $_POST['status'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            $due_date = $_POST['due_date'];
+            $user_id = $_SESSION['user'];
 
-        $taskModel = new TaskModel($this->pdo);
-        $taskModel->updateTaskAdvance($id, $title, $description, $dueDate, $status);
+            $taskModel = new TaskModel($this->pdo);
+            $taskModel->updateTaskAdvance($id, $title, $description, $due_date, $user_id);
 
-        header("Location: index.php?page=tasks");
+            header('Location: /tasks');
+            exit();
+        } else {
+            $id = $_GET['id'];
+            $taskModel = new TaskModel($this->pdo);
+            $task = $taskModel->getTaskById($id);
+
+            require_once __DIR__ . '/../views/tasks/advance-edit.php';
+        }
     }
 
     public function markAsDone() {
