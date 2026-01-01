@@ -200,7 +200,7 @@
             <!-- overlay detail -->
             <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="togglePopup()"></div>                        
             <div id="popup" class="fixed top-0 right-0 h-full w-[500px] 
-              bg-gradient-to-b from-blue-50 to-white shadow-2xl rounded-l
+              bg-white shadow-2xl rounded-l
               transform translate-x-full transition-all duration-500 ease-in-out z-50">
               <div class="p-6 space-y-6 animate-fadeIn">
                 

@@ -91,10 +91,9 @@ class TaskController {
         $id = $_POST['id'];
         $title = $_POST['title'];
         $dueDate = $_POST['due_date'];
-        $status = $_POST['status'];
 
         $taskModel = new TaskModel($this->pdo);
-        $taskModel->updateTaskSimple($id, $title, $dueDate, $status);
+        $taskModel->updateTaskSimple($id, $title, $dueDate);
 
         header("Location: index.php?page=tasks");
     }
