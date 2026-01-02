@@ -359,6 +359,8 @@
 
       document.getElementById('advanceEditLink').href =
         "index.php?page=tasks&action=updateAdvance&id=" + id;
+      
+      document.getElementById("deleteTaskId").value = id;
 
       document.getElementById('EditTaskModal').classList.remove('hidden');
     }

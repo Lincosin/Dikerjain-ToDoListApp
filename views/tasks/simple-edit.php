@@ -32,7 +32,7 @@
         <div class="flex justify-between items-center mt-6">
             <!-- Delete (form terpisah) -->
             <form method="POST" action="index.php?page=tasks&action=delete">
-                <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                <input type="hidden" name="id" id="deleteTaskId">
                 <button type="submit"
                     class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 text-sm">
                     <i class="fa-solid fa-trash-can"></i> Delete
