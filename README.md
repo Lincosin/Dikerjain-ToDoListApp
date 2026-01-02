@@ -2,6 +2,19 @@
 
 Aplikasi web sederhana untuk manajemen tugas pribadi yang memungkinkan pengguna untuk menambah, mengedit, dan menghapus tugas secara efisien. Proyek ini dibangun menggunakan **PHP Native** dengan arsitektur **MVC**.
 
+
+---
+
+
+## 👥 Contributors
+
+| Role | Name | GitHub | Picture |
+|------|------|--------|---------|
+| 👑 Lead | I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin) | <img src="https://github.com/Lincosin.png" width="50"/> |
+|   Front End   | Gede Dirandra Satya Mahayana | [@D1RYZX](https://github.com/D1RYZX) | <img src="https://github.com/D1RYZX.png" width="50"/> |
+|   Front End   | I Made Gede Nuryana Putra | [@nuryanaputra19-stack](https://github.com/nuryanaputra19-stack) | <img src="https://github.com/nuryanaputra19-stack.png" width="50"/> |
+
+
 ---
 
 
@@ -72,15 +85,5 @@ Sesuai ketentuan pengembangan, aplikasi ini mengimplementasikan:
 
 ---
 
-## 👥 Contributors
-
-| Role | Name | GitHub | Picture |
-|------|------|--------|---------|
-| 👑 Lead | I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin) | <img src="https://github.com/Lincosin.png" width="50"/> |
-|   Front End   | Gede Dirandra Satya Mahayana | [@D1RYZX](https://github.com/D1RYZX) | <img src="https://github.com/D1RYZX.png" width="50"/> |
-|   Front End   | I Made Gede Nuryana Putra | [@nuryanaputra19-stack](https://github.com/nuryanaputra19-stack) | <img src="https://github.com/nuryanaputra19-stack.png" width="50"/> |
-
-
----
 
 > 📚 **Let's start our productivity day with Dikerjain!.**
