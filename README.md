@@ -77,8 +77,8 @@ Sesuai ketentuan pengembangan, aplikasi ini mengimplementasikan:
 | Role | Name | GitHub | Picture |
 |------|------|--------|---------|
 | 👑 Lead | I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin) | <img src="https://github.com/Lincosin.png" width="50"/> |
-|      | Gede Dirandra Satya Mahayana | [@D1RYZX](https://github.com/D1RYZX) | <img src="https://github.com/D1RYZX.png" width="50"/> |
-|      | I Made Gede Nuryana Putra | [@nuryanaputra19-stack](https://github.com/nuryanaputra19-stack) | <img src="https://github.com/nuryanaputra19-stack.png" width="50"/> |
+|   Front End   | Gede Dirandra Satya Mahayana | [@D1RYZX](https://github.com/D1RYZX) | <img src="https://github.com/D1RYZX.png" width="50"/> |
+|   Front End   | I Made Gede Nuryana Putra | [@nuryanaputra19-stack](https://github.com/nuryanaputra19-stack) | <img src="https://github.com/nuryanaputra19-stack.png" width="50"/> |
 
 
 ---
