@@ -70,7 +70,7 @@ Sesuai ketentuan pengembangan, aplikasi ini mengimplementasikan:
 1. **Desain Database:** Relasi efektif antara tabel pengguna dan tabel tugas.
 2. **Backend PHP:** Script CRUD yang menangani operasi data.
 3. **Sanitasi Data:** Menghindari serangan SQL Injection melalui validasi input.
-4. **Frontend UI:** Desain sederhana dan fungsional menggunakan HTML, CSS, dan JS untuk validasi form.
+4. **Frontend UI:** Desain sederhana dan fungsional menggunakan HTML, JS dan Framework Tailwind CSS untuk validasi form.
 
 ---
 
