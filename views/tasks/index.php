@@ -162,7 +162,7 @@
                                 <form method="POST" action="index.php?page=tasks&action=markAsDone">
                                   <input type="hidden" name="id" value="<?= $task['id'] ?>">
                                   <input type="hidden" name="status" value="done">
-                                  <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
+                                  <input type="checkbox" onclick="event.stopPropagation()" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
                                 </form>
                               </div>
                             </div>
@@ -200,7 +200,7 @@
                                 <form method="POST" action="index.php?page=tasks&action=toggleStatus">
                                   <input type="hidden" name="id" value="<?= $task['id'] ?>">
                                   <input type="hidden" name="status" value="<?= $task['status'] === 'done' ? 'pending' : 'done' ?>">
-                                  <input type="checkbox" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
+                                  <input type="checkbox" onclick="event.stopPropagation()" onchange="this.form.submit()" <?= $task['status'] === 'done' ? 'checked' : '' ?>>
                                 </form>
                               </div>
                             </div>
