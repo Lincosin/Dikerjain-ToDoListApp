@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
   <meta charset="UTF-8">
   <title>DIKERJAIN | Settings</title>
+  <script src="/src/js/theme.js"></script>
   <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
 </head>
 
-<body class="bg-[#F6F3EE] text-slate-800 h-screen w-screen overflow-hidden">
+<body class="bg-[#F6F3EE] text-slate-800 h-screen w-screen overflow-hidden dark:bg-slate-900 dark:text-slate-100">
 
 <div class="h-screen w-screen flex">
 
@@ -17,20 +21,20 @@
 ?>
 
 <!-- CONTENT -->
-<section class="flex-1 bg-white p-10 overflow-y-auto">
+<section class="flex-1 bg-white dark:bg-slate-800 p-10 overflow-y-auto">
 
-<h1 class="text-3xl font-bold mb-8">Settings <i class="fa-solid fa-gears"></i></h1>
+<h1 class="text-3xl font-bold mb-8 dark:text-white">Settings <i class="fa-solid fa-gears"></i></h1>
 
 <!-- PROFILE -->
-<div class="bg-slate-50 border rounded-xl p-6 mb-8 flex items-center justify-between">
+<div class="bg-slate-50 dark:bg-slate-700 dark:border-slate-700 border rounded-xl p-6 mb-8 flex items-center justify-between">
   <!-- Bagian kiri: avatar + info -->
   <div class="flex items-center gap-6">
     <img id="avatar" src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" 
-         class="w-20 h-20 rounded-full border-2 border-white shadow-sm" alt="Profile">
+         class="w-20 h-20 rounded-full border-2 border-white dark:border-slate-700 shadow-sm" alt="Profile">
 
     <div>
-      <h2 class="text-xl font-semibold"><?= htmlspecialchars($username) ?></h2>
-      <p class="text-slate-500"><?= htmlspecialchars($email) ?></p>
+      <h2 class="text-xl font-semibold dark:text-white"><?= htmlspecialchars($username) ?></h2>
+      <p class="text-slate-500 dark:text-slate-300"><?= htmlspecialchars($email) ?></p>
       <button onclick="openProfile()" class="mt-3 text-sm text-blue-600 hover:underline">
         Changes Profile
       </button>
@@ -39,7 +43,7 @@
 
   <!-- Bagian kanan: logout -->
   <form method="POST" action="index.php?page=user&action=logout">
-    <button class="bg-slate-100 px-4 py-2 rounded text-red-600 font-medium hover:bg-slate-200"><i class="fa-solid fa-right-from-bracket"></i>
+    <button class="bg-slate-100 dark:bg-slate-600 px-4 py-2 rounded text-red-600 font-medium hover:bg-slate-200"><i class="fa-solid fa-right-from-bracket"></i>
       Logout
     </button>
   </form>
@@ -48,13 +52,27 @@
 
 <!-- PENGATURAN UMUM -->
 <div class="mb-10">
-  <h2 class="text-lg font-semibold mb-4">General Settings</h2>
+  <h2 class="text-lg font-semibold mb-4 dark:text-white">General Settings</h2>
 
   <!-- NOTIFIKASI -->
-  <div class="flex justify-between items-center border rounded-lg p-4">
-    <span>Notification</span>
+  <div class="flex justify-between items-center dark:border-slate-700 border rounded-lg p-4 mb-4">
+    <span class="dark:text-slate-200">Notification</span>
     <label class="relative inline-flex items-center cursor-pointer">
       <input type="checkbox" checked class="sr-only peer">
+      <div class="w-11 h-6 bg-slate-300 rounded-full
+                  peer-checked:bg-blue-600
+                  after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                  after:bg-white after:rounded-full after:h-5 after:w-5
+                  after:transition-all peer-checked:after:translate-x-5">
+      </div>
+    </label>
+  </div>
+
+  <!-- DARK MODE -->
+  <div class="flex justify-between items-center dark:border-slate-700 border rounded-lg p-4 mb-4">
+    <span class="dark:text-slate-200">Dark Mode</span>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input type="checkbox" id="darkToggle" class="sr-only peer">
       <div class="w-11 h-6 bg-slate-300 rounded-full
                   peer-checked:bg-blue-600
                   after:content-[''] after:absolute after:top-[2px] after:left-[2px]
@@ -118,8 +136,31 @@ function randomColor() {
   const name = url.searchParams.get("name"); 
   const bgColor = randomColor(); 
   avatar.src = `https://ui-avatars.com/api/?name=${name}&background=${bgColor}&color=fff`;
-
 </script>
 
+<!-- SCRIPT DARK MODE -->
+<script>
+const toggle = document.getElementById("darkToggle");
+
+if (localStorage.getItem("theme") === "dark") {
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", function () {
+  if (this.checked) {
+    localStorage.setItem("theme", "dark");
+    document.documentElement.classList.add("dark");
+  } else {
+    localStorage.setItem("theme", "light");
+    document.documentElement.classList.remove("dark");
+  }
+});
+
+// fungsi untuk auto update logo
+toggle.addEventListener("change", function () {
+  localStorage.setItem("theme", this.checked ? "dark" : "light");
+  applyTheme();
+});
+</script>
 </body>
 </html>

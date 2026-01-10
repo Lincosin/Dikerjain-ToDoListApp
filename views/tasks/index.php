@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
   <meta charset="UTF-8">
   <title>DIKERJAIN</title>
+  <script src="/src/js/theme.js"></script>
   <link rel="icon" type="image/png" href="src/img/logo.jpeg" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
   <style>
     /* Menghilangkan scrollbar pada Chrome/Safari dan Firefox tanpa mematikan fungsinya */
     .no-scrollbar::-webkit-scrollbar {
@@ -34,31 +38,31 @@
   </style>
 </head>
 
-<body class="bg-[#f8fafc] h-screen w-screen overflow-hidden">
+<body class="bg-[#f8fafc] dark:bg-slate-800 h-screen w-screen overflow-hidden">
   <div class="h-screen w-screen flex">
     <?php require_once __DIR__ . '/../../src/component/sidebar.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-      <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
+      <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-8 py-4 flex items-center justify-between sticky top-0 z-10">
         <div class="flex-1 flex justify-center">
           <div class="relative w-full max-w-lg">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 dark:text-slate-300">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </span>
             <input type="text" id="searchTask"
-              class="w-full bg-slate-100 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500 transition-all"
+              class="w-full bg-slate-100 dark:bg-slate-700 dark:text-slate-200 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500 transition-all"
               placeholder="Cari tugas Anda...">
           </div>
         </div>
 
         <div class="flex items-center gap-3 ml-4">
           <div class="text-right hidden sm:block">
-            <p class="text-sm font-bold text-slate-700 leading-none"><span class="font-normal">Hi,</span> <?= htmlspecialchars($username) ?></p>
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-200 leading-none"><span class="font-normal">Hi,</span> <?= htmlspecialchars($username) ?></p>
           </div>
-          <img id="avatar" src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-white shadow-sm" alt="Profile">
+          <img id="avatar" src="https://ui-avatars.com/api/?name=<?= urlencode($username ?? 'G') ?>&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-white dark:border-slate-800 shadow-sm" alt="Profile">
         </div>
       </header>
 
@@ -67,10 +71,10 @@
           <div class="flex-1 min-w-0">
             <div class="mb-8 flex items-center justify-between">
               <div>
-                <h1 class="text-2xl font-bold text-slate-700">My Tasks</h1>
+                <h1 class="text-2xl font-bold text-slate-700 dark:text-slate-100">My Tasks</h1>
                 <span class="block border-b-4 rounded-full w-5 border-blue-600"></span>
               </div>
-              <button onclick="openModalAdd()" class="text-white hover:text-slate-300 bg-slate-400 hover:bg-blue-700 rounded-md px-2 py-3 w-32 flex items-center justify-center font-medium text-sm transition-all">
+              <button onclick="openModalAdd()" class="text-white hover:text-slate-300 bg-slate-400 dark:bg-slate-500 hover:bg-blue-700 dark:hover:bg-blue-600 rounded-md px-2 py-3 w-32 flex items-center justify-center font-medium text-sm transition-all">
                 + Add Task
               </button>
             </div>
@@ -89,8 +93,8 @@
                   <div class="flex items-center justify-between mb-4 px-1">
                     <div class="flex items-center gap-2">
                       <div class="w-1.5 h-5 <?= $col['bg'] ?> rounded-full"></div>
-                      <h3 class="font-bold text-slate-700 text-sm tracking-wide"><?= $col['title'] ?></h3>
-                      <span class="bg-slate-200 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                      <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm tracking-wide"><?= $col['title'] ?></h3>
+                      <span class="bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-200 text-[10px] px-2 py-0.5 rounded-full font-bold">
                         <?= count(array_filter($tasks, fn($t) => $t['status'] === $status)) ?>
                       </span>
                     </div>
@@ -101,7 +105,7 @@
                     <?php foreach ($tasks as $task): ?>
                       <?php if ($status === 'todo'): ?>
                         <?php if ($task['status'] === 'pending' && date('Y-m-d', strtotime($task['due_date'])) === date('Y-m-d')): ?>
-                          <div class="task-card bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                          <div class="task-card bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer"
                             onclick="togglePopup(
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>',
@@ -109,7 +113,7 @@
                                             '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
                                         )">
                             <div class="flex items-center justify-between mb-1">
-                              <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                              <h4 class="font-bold text-slate-800 dark:text-slate-200 text-[13px] leading-snug">
                                 <?= htmlspecialchars($task['title']) ?>
                               </h4>
                               <button onclick="event.stopPropagation(); openModalEdit(
@@ -117,14 +121,14 @@
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>'
                                           )">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square dark:text-slate-300"></i>
                               </button>
                             </div>
-                            <p class="text-[11px] text-slate-400 mb-4">
+                            <p class="text-[11px] text-slate-400 dark:text-slate-300 mb-4">
                               <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                             </p>
                             <div class="flex items-center justify-between">
-                              <span class="text-[10px] text-slate-400 font-bold italic">
+                              <span class="text-[10px] text-slate-400 dark:text-slate-300 font-bold italic">
                                 <?= ucfirst($task['status']) ?>
                               </span>
                             </div>
@@ -132,7 +136,7 @@
                         <?php endif; ?>
                       <?php elseif ($status === 'pending'): ?>
                         <?php if ($task['status'] === 'pending'): ?>
-                          <div class="task-card bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                          <div class="task-card bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer"
                             onclick="togglePopup(
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>',
@@ -140,7 +144,7 @@
                                             '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
                                         )">
                             <div class="flex items-center justify-between mb-1">
-                              <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                              <h4 class="font-bold text-slate-800 dark:text-slate-200 text-[13px] leading-snug">
                                 <?= htmlspecialchars($task['title']) ?>
                               </h4>
                               <button onclick="event.stopPropagation(); openModalEdit(
@@ -148,14 +152,14 @@
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>'
                                           )">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square dark:text-slate-300"></i>
                               </button>
                             </div>
-                            <p class="text-[11px] text-slate-400 mb-4">
+                            <p class="text-[11px] text-slate-400 dark:text-slate-300 mb-4">
                               <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                             </p>
                             <div class="flex items-center justify-between">
-                              <span class="text-[10px] text-slate-400 font-bold italic">
+                              <span class="text-[10px] text-slate-400 dark:text-slate-300 font-bold italic">
                                 <?= ucfirst($task['status']) ?>
                               </span>
                               <div>
@@ -170,7 +174,7 @@
                         <?php endif; ?>
                       <?php elseif ($status === 'done'): ?>
                         <?php if ($task['status'] === 'done'): ?>
-                          <div class="task-card bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer"
+                          <div class="task-card bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer"
                             onclick="togglePopup(
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>',
@@ -178,7 +182,7 @@
                                             '<?= htmlspecialchars($task['status'], ENT_QUOTES) ?>'
                                         )">
                             <div class="flex items-center justify-between mb-1">
-                              <h4 class="font-bold text-slate-800 text-[13px] leading-snug">
+                              <h4 class="font-bold text-slate-800 dark:text-slate-200 text-[13px] leading-snug">
                                 <?= htmlspecialchars($task['title']) ?>
                               </h4>
                               <button onclick="event.stopPropagation(); openModalEdit(
@@ -186,14 +190,14 @@
                                             '<?= htmlspecialchars($task['title'], ENT_QUOTES) ?>', 
                                             '<?= $task['due_date'] ?>'
                                           )">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square dark:text-slate-300"></i>
                               </button>
                             </div>
-                            <p class="text-[11px] text-slate-400 mb-4">
+                            <p class="text-[11px] text-slate-400 dark:text-slate-300 mb-4">
                               <?= htmlspecialchars($task['due_date'] ?? 'No due date') ?>
                             </p>
                             <div class="flex items-center justify-between">
-                              <span class="text-[10px] text-slate-400 font-bold italic">
+                              <span class="text-[10px] text-slate-400 dark:text-slate-300 font-bold italic">
                                 <?= ucfirst($task['status']) ?>
                               </span>
                               <div>

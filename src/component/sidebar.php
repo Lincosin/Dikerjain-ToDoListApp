@@ -6,28 +6,28 @@ $username = $_SESSION['username'] ?? 'Guest';
 $email = $_SESSION['email'] ?? 'Guest';
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<aside class="w-64 bg-white border-r px-6 py-4 hidden md:flex flex-col h-screen sticky top-0">
-    <img src="/src/img/logo.jpeg" class="w-36" alt="">
-    <p class="text-xs text-slate-400 mb-10">Let's start our productive days!</p>
+<aside class="w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-700 px-6 py-4 hidden md:flex flex-col h-screen sticky top-0">
+    <img src="/src/img/logo.jpeg" class="w-36" id="logo" alt="logo">
+    <p class="text-xs text-slate-400 dark:text-slate-300 mb-10">Let's start our productive days!</p>
 
-    <nav class="flex flex-col gap-2 flex-grow text-slate-600 font-medium">
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'tasks') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
+    <nav class="flex flex-col gap-2 flex-grow text-slate-600 dark:text-slate-100 font-medium">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'tasks') ? 'active' : '' ?> ' hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600" 
            href="index.php?page=tasks">
             <span class="text-lg"><i class="fa-solid fa-list-check"></i></span> My Tasks
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'calendar') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'calendar') ? 'active' : '' ?> ' hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600" 
            href="index.php?page=calendar">
             <span class="text-lg"><i class="fa-solid fa-calendar"></i></span> Calendar
         </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'settings') ? 'active' : '' ?> ' hover:bg-slate-50 hover:text-blue-600" 
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all <?= ($page == 'settings') ? 'active' : '' ?> ' hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600" 
            href="index.php?page=settings">
             <span class="text-lg"><i class="fa-solid fa-gear"></i></span> Settings
         </a>
     </nav>
 
     <div class="mt-auto">
-        <div class="border-t border-slate-100 pt-6 px-4">
-            <div class="text-[10px] text-slate-400 uppercase tracking-wider">
+        <div class="border-t border-slate-100 dark:border-slate-700 pt-6 px-4">
+            <div class="text-[10px] text-slate-400 dark:text-slate-300 uppercase tracking-wider">
                 &copy; <span id="year"></span> Dikerjain </div>
         </div>
     </div>

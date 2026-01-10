@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <title>DIKERJAIN | Kalender</title>
+    <script src="/src/js/theme.js"></script>
     <link rel="icon" type="image/png" href="src/img/logo.jpeg"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         /* Memastikan sel kalender tetap kotak dan proporsional */
@@ -17,51 +17,54 @@
             justify-content: center;
         }
     </style>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
 </head>
 
-<body class="bg-white h-screen w-screen overflow-hidden font-sans">
+<body class="bg-white dark:bg-slate-900 h-screen w-screen overflow-hidden font-sans">
 
 <div class="h-screen w-screen flex">
 
     <?php if(file_exists(__DIR__ . '/../../src/component/sidebar.php')) 
       include __DIR__ . '/../../src/component/sidebar.php'; ?>
 
-    <main class="flex-1 bg-white flex flex-col border-l border-slate-100 overflow-hidden">
+    <main class="flex-1 bg-white dark:bg-slate-900 flex flex-col border-l border-slate-100 dark:border-slate-700 overflow-hidden">
         
-        <header class="p-6 border-b border-slate-50 flex justify-between items-center bg-white shrink-0">
+        <header class="p-6 border-b border-slate-50 dark:border-slate-700 flex justify-between items-center bg-white dark:bg-slate-900 shrink-0">
             <div>
-                <h1 class="text-2xl font-semibold text-slate-800 tracking-tight">Eksplore schedule <i class="fa-solid fa-calendar-days"></i></h1>
-                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">Manage your daily productivity</p>
+                <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-200 tracking-tight">Eksplore schedule <i class="fa-solid fa-calendar-days"></i></h1>
+                <p class="text-[10px] text-slate-400 dark:text-slate-300 font-semibold uppercase tracking-widest mt-1">Manage your daily productivity</p>
             </div>
-            <div class="flex items-center bg-slate-100 p-1 rounded-lg gap-1">
-                <button id="prevMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs"><i class="fa-solid fa-caret-left"></i></button>
-                <span id="monthYear" class="text-[10px] font-semibold text-slate-700 uppercase tracking-widest px-4 min-w-[120px] text-center"></span>
-                <button id="nextMonth" class="px-3 py-1 hover:bg-white rounded transition-all text-xs"><i class="fa-solid fa-caret-right"></i></button>
+            <div class="flex items-center bg-slate-100 dark:bg-slate-700 p-1 rounded-lg gap-1">
+                <button id="prevMonth" class="px-3 py-1 hover:bg-white dark:hover:bg-slate-600 rounded transition-all text-xs"><i class="fa-solid fa-caret-left dark:text-slate-200"></i></button>
+                <span id="monthYear" class="text-[10px] font-semibold text-slate-700 dark:text-slate-200 px-4 min-w-[120px] text-center"></span>
+                <button id="nextMonth" class="px-3 py-1 hover:bg-white dark:hover:bg-slate-600 rounded transition-all text-xs"><i class="fa-solid fa-caret-right dark:text-slate-200"></i></button>
             </div>
         </header>
 
-        <div class="w-full p-6 border-b border-slate-100 bg-slate-50/20" style="height: 48vh;">
+        <div class="w-full p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/20 dark:bg-slate-800" style="height: 48vh;">
             <div class="grid grid-cols-7 text-center mb-3">
                 <?php foreach(['Min','Sen','Sel','Rab','Kam','Jum','Sab'] as $day): ?>
-                    <div class="text-[9px] font-semibold text-slate-300 uppercase tracking-[0.2em]"><?= $day ?></div>
+                    <div class="text-[9px] font-semibold text-slate-300 dark:text-slate-400 uppercase tracking-[0.2em]"><?= $day ?></div>
                 <?php endforeach; ?>
             </div>
-            <div id="calendarGrid" class="grid grid-cols-7 gap-[1px] border border-slate-100 bg-slate-100">
+            <div id="calendarGrid" class="grid grid-cols-7 gap-[1px] border border-slate-100 dark:border-slate-700 bg-slate-100 dark:bg-slate-700">
                 </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-white">
-            <div class="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
-                <h2 class="text-sm font-semibold text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                    <i class="fa-solid fa-clipboard-list"></i> Deadline Details <span id="detailMonthLabel" class="text-blue-600"></span>
+        <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-white dark:bg-slate-900">
+            <div class="flex items-center justify-between mb-6 border-b border-slate-50 dark:border-slate-700 pb-4">
+                <h2 class="text-sm font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-list"></i> Deadline Details <span id="detailMonthLabel" class="text-blue-600 dark:text-blue-400"></span>
                 </h2>
-                <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded"> <?= count($rows) ?> Tugas </span>
+                <span class="text-[10px] font-bold text-slate-400 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded"> <?= count($rows) ?> Tugas </span>
             </div>
             
             <div class="flex flex-col gap-3">
                 <?php if(empty($rows)): ?>
-                    <div class="py-10 text-center border-2 border-dashed border-slate-50">
-                        <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">
+                    <div class="py-10 text-center border-2 border-dashed border-slate-50 dark:border-slate-700">
+                        <p class="text-[10px] text-slate-300 dark:text-slate-400 font-bold uppercase tracking-widest">
                             Belum ada tugas bulan ini
                         </p>
                     </div>
@@ -69,42 +72,42 @@
                     <?php foreach($rows as $task): 
                         $isToday = (date('Y-m-d', strtotime($task['due_date'])) == date('Y-m-d'));
                     ?>
-                        <div class="group flex items-center gap-6 p-4 border border-slate-50 hover:bg-blue-50/30 transition-all cursor-default">
-                            <div class="w-12 text-center border-r border-slate-100 pr-4">
-                                <span class="text-[9px] font-bold text-slate-400 block uppercase">
+                        <div class="group flex items-center gap-6 p-4 border border-slate-50 dark:border-slate-700 hover:bg-blue-50/30 dark:hover:bg-slate-800 transition-all cursor-default">
+                            <div class="w-12 text-center border-r border-slate-100 dark:border-slate-700 pr-4">
+                                <span class="text-[9px] font-bold text-slate-400 dark:text-slate-300 block uppercase">
                                     <?= date('M', strtotime($task['due_date'])) ?>
                                 </span>
-                                <span class="text-lg font-black text-slate-800 leading-none">
+                                <span class="text-lg font-black text-slate-800 dark:text-slate-200 leading-none">
                                     <?= date('d', strtotime($task['due_date'])) ?>
                                 </span>
                             </div>
 
                             <div class="flex-1">
                                 <div class="flex justify-between items-end mb-2">
-                                    <h4 class="font-bold text-slate-800 text-[12px]">
+                                    <h4 class="font-bold text-slate-800 dark:text-slate-200 text-[12px]">
                                         <?= htmlspecialchars($task['title']) ?>
                                     </h4>
-                                    <span class="text-[10px] font-black text-blue-600">
+                                    <span class="text-[10px] font-black text-blue-600 dark:text-blue-400">
                                         <?= ($task['status'] === 'done') ? '100%' : '50%' ?>
                                     </span>
                                 </div>
-                                <div class="w-full h-1.5 bg-slate-100 overflow-hidden">
+                                <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-700 overflow-hidden">
                                     <div class="h-full bg-blue-600 transition-all duration-1000" 
                                         style="width: <?= ($task['status'] === 'done') ? '100' : '50' ?>%">
                                     </div>
                                 </div>
-                                <p class="text-[9px] font-bold text-slate-300 uppercase mt-2 tracking-tighter">
+                                <p class="text-[9px] font-bold text-slate-300 dark:text-slate-400 uppercase mt-2 tracking-tighter">
                                     Deadline: <?= date('d F Y', strtotime($task['due_date'])) ?>
                                 </p>
                             </div>
 
                             <div class="shrink-0">
                                 <?php if ($task['status'] === 'done'): ?>
-                                    <span class="px-3 py-1 bg-green-600 text-white text-[9px] font-black uppercase tracking-tighter">Done</span>
+                                    <span class="px-3 py-1 bg-green-600 dark:bg-green-500 text-white text-[9px] font-black uppercase tracking-tighter">Done</span>
                                 <?php elseif ($isToday): ?>
-                                    <span class="px-3 py-1 bg-red-600 text-white text-[9px] font-black uppercase tracking-tighter">Urgent</span>
+                                    <span class="px-3 py-1 bg-red-600 dark:bg-red-500 text-white text-[9px] font-black uppercase tracking-tighter">Urgent</span>
                                 <?php else: ?>
-                                    <span class="px-3 py-1 border border-slate-200 text-slate-400 text-[9px] font-black uppercase tracking-tighter">In Progress</span>
+                                    <span class="px-3 py-1 border border-slate-200 dark:border-slate-600 text-slate-400 dark:text-slate-300 text-[9px] font-black uppercase tracking-tighter">In Progress</span>
                                 <?php endif; ?>
                             </div>
                         </div>
