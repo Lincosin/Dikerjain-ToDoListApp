@@ -7,7 +7,7 @@ session_start();
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'todoapp');
 define('DB_USER', 'root');
-define('DB_PASS', 'pensil19');
+define('DB_PASS', '');
 
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8";
