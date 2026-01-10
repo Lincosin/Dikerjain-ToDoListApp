@@ -10,7 +10,7 @@ Aplikasi web sederhana untuk manajemen tugas pribadi yang memungkinkan pengguna 
 
 | Role | Name | GitHub | Picture |
 |------|------|--------|---------|
-| 👑 Lead | I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin) | <img src="https://github.com/Lincosin.png" width="50"/> |
+| Back End | I Putu Willy Nugraha | [@Lincosin](https://github.com/Lincosin) | <img src="https://github.com/Lincosin.png" width="50"/> |
 |   Front End   | Gede Dirandra Satya Mahayana | [@D1RYZX](https://github.com/D1RYZX) | <img src="https://github.com/D1RYZX.png" width="50"/> |
 |   Front End   | I Made Gede Nuryana Putra | [@nuryanaputra19-stack](https://github.com/nuryanaputra19-stack) | <img src="https://github.com/nuryanaputra19-stack.png" width="50"/> |
 
