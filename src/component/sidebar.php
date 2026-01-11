@@ -6,7 +6,7 @@ $username = $_SESSION['username'] ?? 'Guest';
 $email = $_SESSION['email'] ?? 'Guest';
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-<aside class="w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-700 px-6 py-4 hidden md:flex flex-col h-screen sticky top-0">
+<aside class="w-64 bg-white dark:bg-black border-r dark:border-slate-700 px-6 py-4 hidden md:flex flex-col h-screen sticky top-0">
     <img src="/src/img/logo.jpeg" class="w-36" id="logo" alt="logo">
     <p class="text-xs text-slate-400 dark:text-slate-300 mb-10">Let's start our productive days!</p>
 
